@@ -6,4 +6,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-src/Modelo/ConexionBD
+NetU_Servidor/src/Modelo/ConexionBD.java
