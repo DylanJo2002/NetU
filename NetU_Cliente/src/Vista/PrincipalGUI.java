@@ -12,8 +12,13 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -42,17 +47,30 @@ public class PrincipalGUI extends javax.swing.JFrame {
      * @param sexo
      */
     public void cargarInformacion(String nombre, String correo,
-            String dependencia, String subdepenencia, String descripcion, String sexo) {
+            String dependencia, String subdepenencia, String descripcion, 
+            String sexo,byte[] foto) {//DANIEL
 
-        descripcionEmpleado = descripcion;
+        try {
+            descripcionEmpleado = descripcion;
 
-        lblNombreValor.setText(nombre);
-        lblCorreoValor.setText(correo);
-        lblDependenciaValor.setText(dependencia);
-        lblSubdependenciaValor.setText(subdepenencia);
-        txtAreaDescripcion.setText(descripcion);
+            lblNombreValor.setText(nombre);
+            lblCorreoValor.setText(correo);
+            lblDependenciaValor.setText(dependencia);
+            lblSubdependenciaValor.setText(subdepenencia);
+            txtAreaDescripcion.setText(descripcion);
 
-        cargarImagenPerfil(sexo);
+        //Daniel
+            BufferedImage image = null;
+            InputStream in = new ByteArrayInputStream(foto);
+            image = ImageIO.read(in);
+            ImageIcon imgi = new ImageIcon(image.getScaledInstance(150, 150, 0));
+            lblFoto.setIcon(imgi);
+        //Daniel
+            
+            
+        } catch (IOException ex) {
+            System.out.println("Metodo cargarInformacion-PrincipalGUI " + ex);
+        }
     }
 
     /**
@@ -120,6 +138,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
         pane_lbl_Informacion = new javax.swing.JPanel();
         lblInfomacionIcon = new javax.swing.JLabel();
         lblInformacion = new javax.swing.JLabel();
+        btnCambiarFoto = new javax.swing.JButton();
         panelPublicaciones = new javax.swing.JPanel();
         pane_lbl_Publicaciones = new javax.swing.JPanel();
         lblInfomacionIcon1 = new javax.swing.JLabel();
@@ -176,7 +195,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaBusqueda = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
+        btnVerPerfil = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -264,6 +283,13 @@ public class PrincipalGUI extends javax.swing.JFrame {
         lblInformacion.setToolTipText("");
         pane_lbl_Informacion.add(lblInformacion);
 
+        btnCambiarFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconfinder-cameravideophotorecordingdevicevlog-3993861_112653.png"))); // NOI18N
+        btnCambiarFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarFotoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panel_Info_PerfilLayout = new javax.swing.GroupLayout(panel_Info_Perfil);
         panel_Info_Perfil.setLayout(panel_Info_PerfilLayout);
         panel_Info_PerfilLayout.setHorizontalGroup(
@@ -273,8 +299,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_Info_PerfilLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                        .addComponent(btnModificarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnCambiarFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnModificarDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(pane_lbl_Informacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_Info_PerfilLayout.createSequentialGroup()
                         .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,12 +357,12 @@ public class PrincipalGUI extends javax.swing.JFrame {
                     .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panel_Info_PerfilLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_Info_PerfilLayout.createSequentialGroup()
-                        .addComponent(btnModificarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))))
+                        .addComponent(btnCambiarFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnModificarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(9, 9, 9))
         );
 
         panelPublicaciones.setBackground(new java.awt.Color(217, 217, 232));
@@ -412,19 +440,19 @@ public class PrincipalGUI extends javax.swing.JFrame {
             .addGroup(panelControlPublicacionLayout.createSequentialGroup()
                 .addGroup(panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelControlPublicacionLayout.createSequentialGroup()
-                        .addContainerGap(9, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnControlPublicaciones))
                     .addGroup(panelControlPublicacionLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnEliminarPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEscribirPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelControlPublicacionLayout.setVerticalGroup(
             panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelControlPublicacionLayout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnControlPublicaciones)
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(btnEscribirPublicacion)
@@ -444,7 +472,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                     .addComponent(panelPublicaciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(panelControlPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 850, Short.MAX_VALUE))
+                .addGap(0, 838, Short.MAX_VALUE))
         );
         panelPerfilLayout.setVerticalGroup(
             panelPerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -626,7 +654,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(tablaBusqueda);
 
-        jButton4.setText("Ver Perfil");
+        btnVerPerfil.setText("Ver Perfil");
 
         jButton5.setText("Enviar mensaje");
 
@@ -653,7 +681,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                             .addComponent(jScrollPane3)))
                     .addGroup(panelBuscadorLayout.createSequentialGroup()
                         .addGap(474, 474, 474)
-                        .addComponent(jButton4)
+                        .addComponent(btnVerPerfil)
                         .addGap(292, 292, 292)
                         .addComponent(jButton5))
                     .addGroup(panelBuscadorLayout.createSequentialGroup()
@@ -676,7 +704,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVerPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -764,6 +792,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private void btnEscribirPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscribirPublicacionActionPerformed
         escribirPublicacion(btnModificarDescripcion.getActionListeners()[0]);
     }//GEN-LAST:event_btnEscribirPublicacionActionPerformed
+
+    private void btnCambiarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarFotoActionPerformed
+
+    }//GEN-LAST:event_btnCambiarFotoActionPerformed
     /**
      * El propósito del método es limpiar y eliminar los checkBoxes en el array
      * y las publicacions en el Panel Contenedor. Se utiliza cada vez que se usa
@@ -977,6 +1009,29 @@ public class PrincipalGUI extends javax.swing.JFrame {
         return respuesta;
 
     }
+    
+ //DANIEL
+    public void setImagenPerfil(ImageIcon imgIcon){  
+        lblFoto.setIcon(imgIcon);
+    }
+    
+    public void escuchaBtnCambiarFoto(ActionListener al){
+        btnCambiarFoto.addActionListener(al);
+    }
+    
+    public void escuchaBtnVerPerfil(ActionListener al){
+        btnVerPerfil.addActionListener(al);
+    }
+    
+    public JButton getBtnVerPerfil(){
+        return btnVerPerfil; 
+    }
+
+    public JButton getBtnCambiarFoto(){
+        return btnCambiarFoto;
+    }
+    
+  //DANIEL
 
     /**
      * El propósito del método es obtener un icono relacionado con la URl para
@@ -1001,13 +1056,14 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnAbrirChat;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscarMensaje;
+    private javax.swing.JButton btnCambiarFoto;
     private javax.swing.JButton btnControlPublicaciones;
     private javax.swing.JButton btnEliminarPublicacion;
     private javax.swing.JButton btnEscribirPublicacion;
     private javax.swing.JButton btnModificarDescripcion;
+    private javax.swing.JButton btnVerPerfil;
     private javax.swing.JComboBox<String> cbxDependecia;
     private javax.swing.JComboBox<String> cbxSubdependecia;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

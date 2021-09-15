@@ -6,6 +6,8 @@ package Controlador;
 
 import Modelo.GestorBDEmpleado;
 import Paquetes.CambiarDescripcion;
+import Paquetes.CambiarFoto;
+import Paquetes.ConsultaPerfiles;
 import Paquetes.EliminarPublicacion;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -179,13 +181,25 @@ public class Servidor extends Thread {
                         publicaciones.setTipo(Paquete.publicaciones);
                         enviarPaquete(publicaciones);
                         
+                    }//DANIEL                 
+                     else {
+                        if (paquete.getTipo() == Paquete.consultaPerfil) {                        
+                            ConsultaPerfiles pk = (ConsultaPerfiles)paquete;                             
+                            ConsultaPerfiles regresarPaquete;
+                            regresarPaquete = gestor.consultaPerfiles(pk);                       
+                            regresarPaquete.setTipo(Paquete.consultaPerfil);                            
+                            enviarPaquete(regresarPaquete);   
+                        } 
+                     else {
+                        if (paquete.getTipo() == Paquete.cambiarFoto) {                        
+                            CambiarFoto cf = (CambiarFoto)paquete; 
+                            gestor.cambiarFotoBD(cf);  
+                        } 
+                     } //DANIEL
                     }
-                        
-                    }    
-
-                    }
-                        
-                    }
+                   }
+                  }      
+                 }  
                 }
 
             } catch (IOException | ClassNotFoundException ex) {

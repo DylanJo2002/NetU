@@ -15,6 +15,11 @@ public class Paquete implements Serializable {
     public static final int publicaciones = 5;
     public static final int eliminarPublicacion = 6;
     public static final int error = 10;
+    
+    //DANIEL
+    public static final int consultaPerfil = 7;
+    public static final int cambiarFoto = 12;
+    //DANIEL
 
     private int tipo;
     /**

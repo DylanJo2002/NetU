@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Paquetes.ConsultaPerfiles;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -112,7 +113,11 @@ public class Conexion extends Thread {
                     case Paquete.publicaciones: {
                         controlador.cargarPublicaciones((Publicaciones) paquete);
                     } break;
-
+                  //DANIEL
+                    case Paquete.consultaPerfil: {                        
+                        controlador.iniciarPerfiles((ConsultaPerfiles)paquete);                        
+                    }
+                  //DANIEL
                 }
             }
         } catch (IOException ex) {

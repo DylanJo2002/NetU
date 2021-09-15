@@ -7,3 +7,5 @@ dist/
 nbdist/
 .nb-gradle/
 NetU_Servidor/src/Modelo/ConexionBD.java
+ConexionBD.java
+
