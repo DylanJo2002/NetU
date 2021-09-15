@@ -312,7 +312,8 @@ public class Controlador implements ActionListener, KeyListener {
     }
     
     public void agregarFotoLocal() {
-        JFileChooser j = new JFileChooser("C:\\Users\\danie\\Desktop\\Imagenes Perfiles");
+        JFileChooser j = new JFileChooser("C:\\Users\\danie\\Desktop"
+                + "\\Imagenes Perfiles");
         FileNameExtensionFilter fil = new FileNameExtensionFilter("JPEG,JPG, "
                 + "PNG & GIF", "jpg", "png", "gif", "jpeg");
         j.setFileFilter(fil);
