@@ -2,8 +2,9 @@
  * El propósito de la clase es gestionar todo lo relacionado a la conexión
  * por medio de Socket con NetU Servidor
  */
-package Controlador;
+package Modelo;
 
+import Controlador.Controlador;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

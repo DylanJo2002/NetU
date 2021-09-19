@@ -5,17 +5,75 @@
  */
 package vista;
 
+import Paquetes.Mensaje;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.util.ArrayList;
+import javax.swing.JTextArea;
+
 /**
  *
  * @author Camila
  */
 public class ChatGUI extends javax.swing.JFrame {
+    private Color colorMensajePropio = new Color(241, 179, 154);
+    private Color colorMensajeInterlocutor = new Color(179, 214, 23);
+    private int lastKeyPressed;
 
     /**
      * Creates new form ChatGUI
      */
-    public ChatGUI() {
+    public ChatGUI(String nombreEmpleado,ArrayList<Mensaje> mensajes) {
         initComponents();
+        setVisible(true);
+        setTitle(nombreEmpleado);
+        cargarMensages(mensajes);
+
+    }
+
+    public static void main(String[] args) {
+        Mensaje mensaje1 = new Mensaje("Hola","18 de septiembre","11:32");
+        mensaje1.setPropio(true);
+        Mensaje mensaje2 = new Mensaje("Hola, ¿como va el trabajo?","18 de septiembre","11:34");
+        mensaje2.setPropio(false);
+        Mensaje mensaje3 = new Mensaje("Muy bien, y el tuyo?","18 de septiembre","11:40");
+        mensaje3.setPropio(true);
+        Mensaje mensaje4 = new Mensaje("Muy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreado","18 de septiembre","11:50");
+        mensaje4.setPropio(false);
+        ArrayList<Mensaje> mensajes= new ArrayList<Mensaje>();
+        mensajes.add(mensaje1);
+        mensajes.add(mensaje2);
+        mensajes.add(mensaje3);
+        mensajes.add(mensaje4);
+        ChatGUI chat = new ChatGUI("Laura Milena",mensajes);
+    }
+
+    public void cargarMensages(ArrayList<Mensaje> mensajes) {
+        GridBagConstraints restriccion = new GridBagConstraints();
+        for(Mensaje mensaje : mensajes){
+            JTextArea mensajeGUI = new JTextArea(mensaje.getContenido());
+            mensajeGUI.setEditable(false);
+            mensajeGUI.setToolTipText(mensaje.getFecha().concat("\n ").
+                    concat(mensaje.getHora()));
+            mensajeGUI.setLineWrap(true);
+            if(mensaje.getPropio()){
+                mensajeGUI.setBackground(colorMensajePropio);
+            } else {
+                mensajeGUI.setBackground(colorMensajeInterlocutor);
+            }
+            
+            restriccion.gridx = 0;
+            restriccion.gridy = panelMessages.getComponentCount();
+            restriccion.fill = GridBagConstraints.HORIZONTAL;
+            restriccion.insets = new Insets(2, 4, 2, 4);
+            restriccion.weightx = 1.0;
+            restriccion.ipady = 6*mensajeGUI.getLineCount();
+            panelMessages.add(mensajeGUI,restriccion);
+        };
+        panelMessages.revalidate();
+        panelMessages.invalidate();
+        repaint();
     }
 
     /**
@@ -27,74 +85,97 @@ public class ChatGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtAreaChat = new javax.swing.JTextArea();
+        PanelContenedor = new javax.swing.JPanel();
         btnEnviar = new javax.swing.JButton();
-        txtMensajeChat = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        scrollMensage = new javax.swing.JScrollPane();
+        txtMensage = new javax.swing.JTextArea();
+        scrollMensages = new javax.swing.JScrollPane();
+        panelMessages = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Chat ");
+        setTitle("Empleado ");
+        setBackground(new java.awt.Color(85, 85, 85));
+        setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Chat NetU");
+        PanelContenedor.setBackground(new java.awt.Color(186, 232, 217));
+        PanelContenedor.setForeground(new java.awt.Color(235, 0, 235));
+        PanelContenedor.setToolTipText("");
 
-        txtAreaChat.setEditable(false);
-        txtAreaChat.setColumns(20);
-        txtAreaChat.setRows(5);
-        jScrollPane1.setViewportView(txtAreaChat);
+        btnEnviar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/enviarMensaje_icon.png"))); // NOI18N
+        btnEnviar.setToolTipText("Enviar mensaje");
 
-        btnEnviar.setText("Enviar Mensaje");
+        txtMensage.setColumns(20);
+        txtMensage.setLineWrap(true);
+        txtMensage.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtMensageKeyPressed(evt);
+            }
+        });
+        scrollMensage.setViewportView(txtMensage);
 
-        jLabel2.setText("Escribe un mensaje:");
+        panelMessages.setBackground(new java.awt.Color(242, 242, 240));
+        panelMessages.setLayout(new java.awt.GridBagLayout());
+        scrollMensages.setViewportView(panelMessages);
+
+        javax.swing.GroupLayout PanelContenedorLayout = new javax.swing.GroupLayout(PanelContenedor);
+        PanelContenedor.setLayout(PanelContenedorLayout);
+        PanelContenedorLayout.setHorizontalGroup(
+            PanelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelContenedorLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(PanelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(scrollMensages)
+                    .addGroup(PanelContenedorLayout.createSequentialGroup()
+                        .addComponent(scrollMensage, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        PanelContenedorLayout.setVerticalGroup(
+            PanelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelContenedorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollMensages, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEnviar)
+                    .addComponent(scrollMensage, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(btnEnviar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
-                                .addComponent(txtMensajeChat))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(127, 127, 127)
-                        .addComponent(jLabel1)))
-                .addContainerGap(44, Short.MAX_VALUE))
+            .addComponent(PanelContenedor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addGap(3, 3, 3)
-                .addComponent(txtMensajeChat, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btnEnviar)
-                .addContainerGap())
+            .addComponent(PanelContenedor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtMensageKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMensageKeyPressed
+        if(lastKeyPressed == 16 && evt.getKeyCode() == 10){
+            System.out.println("Enter");
+        }else{
+            if(evt.getKeyCode() == 10){
+            System.out.println("Enviado");
+            }
+        }
+
+        lastKeyPressed = evt.getKeyCode();
+        System.out.println("Tecla "+evt.getKeyCode());
+    }//GEN-LAST:event_txtMensageKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PanelContenedor;
     private javax.swing.JButton btnEnviar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea txtAreaChat;
-    private javax.swing.JTextField txtMensajeChat;
+    private javax.swing.JPanel panelMessages;
+    private javax.swing.JScrollPane scrollMensage;
+    private javax.swing.JScrollPane scrollMensages;
+    private javax.swing.JTextArea txtMensage;
     // End of variables declaration//GEN-END:variables
 }

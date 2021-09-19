@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Modelo.Conexion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Paquetes.Paquete;
@@ -20,6 +21,7 @@ import java.awt.event.KeyListener;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import vista.ChatGUI;
 import vista.LoginGUI;
 import vista.PrincipalGUI;
 
@@ -28,6 +30,7 @@ public class Controlador implements ActionListener, KeyListener {
     private Conexion conexion;
     private LoginGUI login;
     private PrincipalGUI principalGUI;
+    private ChatGUI chat;
 
     /**
      * Constructor. Se inicializa la conexión y se empieza a escuchar (loop) a
@@ -71,6 +74,7 @@ public class Controlador implements ActionListener, KeyListener {
         principalGUI.asignarEscuchaAreaDescripcion(this);
         principalGUI.asignarEscuchaBtnModificarDescripcion(this);
         principalGUI.asignarEscuchaBtnEliminarPublicacion(this);
+        principalGUI.asignarEscuchaBtnEnviarMensaje(this);
     }
 
     @Override
@@ -110,7 +114,7 @@ public class Controlador implements ActionListener, KeyListener {
                     login.desplegarMensaje(1, "Error al iniciar sesión", mensaje);
 
                 }
-
+                return;
             }
 
         }
@@ -147,6 +151,7 @@ public class Controlador implements ActionListener, KeyListener {
                         }
                     }
                 }
+                return;
             }
 
             if (principalGUI.getEscribirPublicacion() != null) {
@@ -172,7 +177,7 @@ public class Controlador implements ActionListener, KeyListener {
                     }
 
                 }
-
+                return;
             }
 
             if (e.getSource().equals(principalGUI.getBtnEliminarPublicacion())) {
@@ -207,7 +212,11 @@ public class Controlador implements ActionListener, KeyListener {
                     principalGUI.desplegarMensajeDialogo(1, "ERROR AL ELIMINAR PUBLICACION(ES)",
                              "Usted no tiene ninguna publicación.\n ¡Comienza publicando una!");
                 }
-
+                return;
+            }
+            
+            if(e.getSource().equals(principalGUI.getBtnEnviarMensaje())){
+                chat = new ChatGUI("Laura Milena",null);
             }
 
         }
