@@ -6,11 +6,20 @@
 package vista;
 
 import Paquetes.Mensaje;
+import java.awt.Adjustable;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -19,37 +28,22 @@ import javax.swing.JTextArea;
 public class ChatGUI extends javax.swing.JFrame {
     private Color colorMensajePropio = new Color(241, 179, 154);
     private Color colorMensajeInterlocutor = new Color(179, 214, 23);
-    private int lastKeyPressed;
+    private int codigoDestinatario;
 
     /**
      * Creates new form ChatGUI
      */
-    public ChatGUI(String nombreEmpleado,ArrayList<Mensaje> mensajes) {
+    public ChatGUI(String nombreEmpleado,ArrayList<Mensaje> mensajes,
+            int codigoDestinatario) {
+        this.codigoDestinatario = codigoDestinatario;
         initComponents();
         setVisible(true);
-        setTitle(nombreEmpleado);
+        setTitle(nombreEmpleado);        
         cargarMensages(mensajes);
-
     }
-
-    public static void main(String[] args) {
-        Mensaje mensaje1 = new Mensaje("Hola","18 de septiembre","11:32");
-        mensaje1.setPropio(true);
-        Mensaje mensaje2 = new Mensaje("Hola, ¿como va el trabajo?","18 de septiembre","11:34");
-        mensaje2.setPropio(false);
-        Mensaje mensaje3 = new Mensaje("Muy bien, y el tuyo?","18 de septiembre","11:40");
-        mensaje3.setPropio(true);
-        Mensaje mensaje4 = new Mensaje("Muy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreadoMuy agetreado","18 de septiembre","11:50");
-        mensaje4.setPropio(false);
-        ArrayList<Mensaje> mensajes= new ArrayList<Mensaje>();
-        mensajes.add(mensaje1);
-        mensajes.add(mensaje2);
-        mensajes.add(mensaje3);
-        mensajes.add(mensaje4);
-        ChatGUI chat = new ChatGUI("Laura Milena",mensajes);
-    }
-
+    
     public void cargarMensages(ArrayList<Mensaje> mensajes) {
+        panelMessages.removeAll();
         GridBagConstraints restriccion = new GridBagConstraints();
         for(Mensaje mensaje : mensajes){
             JTextArea mensajeGUI = new JTextArea(mensaje.getContenido());
@@ -62,7 +56,6 @@ public class ChatGUI extends javax.swing.JFrame {
             } else {
                 mensajeGUI.setBackground(colorMensajeInterlocutor);
             }
-            
             restriccion.gridx = 0;
             restriccion.gridy = panelMessages.getComponentCount();
             restriccion.fill = GridBagConstraints.HORIZONTAL;
@@ -70,12 +63,30 @@ public class ChatGUI extends javax.swing.JFrame {
             restriccion.weightx = 1.0;
             restriccion.ipady = 6*mensajeGUI.getLineCount();
             panelMessages.add(mensajeGUI,restriccion);
-        };
+        };  
         panelMessages.revalidate();
         panelMessages.invalidate();
         repaint();
     }
+    
+    public String obtenerMensaje(){
+        return txtMensage.getText().trim();
+    }
 
+    public void limpiarTxtMensaje(){
+        txtMensage.setColumns(0);
+        txtMensage.setRows(0);
+        txtMensage.setText(null);
+        txtMensage.validate();
+        txtMensage.repaint();   
+        scrollMensage.getVerticalScrollBar().setValue(0);
+        scrollMensage.repaint();
+    }
+
+    public int getCodigoDestinatario() {
+        return codigoDestinatario;
+    }   
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -92,8 +103,7 @@ public class ChatGUI extends javax.swing.JFrame {
         scrollMensages = new javax.swing.JScrollPane();
         panelMessages = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Empleado ");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(85, 85, 85));
         setResizable(false);
 
@@ -106,11 +116,6 @@ public class ChatGUI extends javax.swing.JFrame {
 
         txtMensage.setColumns(20);
         txtMensage.setLineWrap(true);
-        txtMensage.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtMensageKeyPressed(evt);
-            }
-        });
         scrollMensage.setViewportView(txtMensage);
 
         panelMessages.setBackground(new java.awt.Color(242, 242, 240));
@@ -156,20 +161,18 @@ public class ChatGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtMensageKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMensageKeyPressed
-        if(lastKeyPressed == 16 && evt.getKeyCode() == 10){
-            System.out.println("Enter");
-        }else{
-            if(evt.getKeyCode() == 10){
-            System.out.println("Enviado");
-            }
-        }
-
-        lastKeyPressed = evt.getKeyCode();
-        System.out.println("Tecla "+evt.getKeyCode());
-    }//GEN-LAST:event_txtMensageKeyPressed
-
+    
+    public void setKeyListener(KeyListener kl){
+        txtMensage.addKeyListener(kl);
+    }
+    
+    public void setWindowsListener(WindowListener wl){
+        addWindowListener(wl);
+    }
+    
+    public void saltoLineaMensaje(){
+        txtMensage.setText(obtenerMensaje().concat("\n"));
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelContenedor;
     private javax.swing.JButton btnEnviar;

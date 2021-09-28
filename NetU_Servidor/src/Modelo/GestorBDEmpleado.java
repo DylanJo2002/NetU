@@ -121,7 +121,7 @@ public class GestorBDEmpleado {
      * @return Un ResultSet con el resultado de la consulta SQL
      */
     public ResultSet ejecutarQuery(String consulta) {
-
+        System.out.println(consulta);
         ResultSet result = null;
         PreparedStatement stment;
 
@@ -184,8 +184,6 @@ public class GestorBDEmpleado {
         return listarPublicaciones(publicacion.getId_Empleado());
 
     }
-
-    ;
     
     public void eliminarPublicaciones(EliminarPublicacion eliminarPublicacion) {
 
@@ -243,13 +241,53 @@ public class GestorBDEmpleado {
         return publicaciones;
     }
 
+    public Chat contruirChat(Chat chat, int codigoEmpleado) {
+        String conjunto = "IN ("+codigoEmpleado+","+chat.getCodigoDestinatario()+")";
+        String consultarChat = "SELECT * FROM mensaje WHERE codigo_Empleado_1 "
+                + conjunto + " OR codigo_Empleado_2 "+conjunto
+                + " ORDER BY fecha, hora ASC";
+        
+        ResultSet resultChat = ejecutarQuery(consultarChat);
+        try {
+            ArrayList<Mensaje> mensajes= new ArrayList<Mensaje>();
+            while(resultChat.next()){
+                int codigoEmisor = resultChat.getInt("codigo_Empleado_1");
+                
+                Mensaje mensaje = new Mensaje(resultChat.getString("contenido"),
+                    resultChat.getString("fecha"),resultChat.getString("hora"));
+                
+                if(codigoEmisor == codigoEmpleado){
+                    mensaje.setPropio(true);
+                }
+                mensajes.add(mensaje);
+            }
+            
+            chat.setMensajes(mensajes);
+        } catch (SQLException ex) {
+            System.out.println("Error al recorrer la consulta en CHAT");
+            return null;
+        }
+        
+        return chat;
+    };
+    
+    public void crearMensaje(EnvioMensaje mensaje, int codigoEmpleado){
+        String hora = Tiempo.obtenerHoraActual();
+        String fecha = Tiempo.obtenerFechaActual();
+        
+        String insercion = "INSERT INTO mensaje VALUES("+codigoEmpleado
+                +","+mensaje.getCodigoDestinatario()+",'"+fecha+"','"+hora+"','"
+                +mensaje.getMensaje()+"');";
+        ejecutarUpdate(insercion);
+    }
+    
     /**
      * El propósito del método es ejecutar una actualización SQL.
      *
      * @param update El Update SQL que se quiere realizar
      */
     public void ejecutarUpdate(String update) {
-
+        System.out.println(update);
         PreparedStatement stment;
         int bandera = -1;
 
@@ -265,12 +303,4 @@ public class GestorBDEmpleado {
         }
 
     }
-
-    public static void main(String[] args) {
-        List<Integer> lista = new ArrayList();
-
-        lista.add(1);
-        System.out.println(lista);
-    }
-
 }

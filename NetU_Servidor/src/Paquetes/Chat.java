@@ -25,7 +25,7 @@ public class Chat extends Paquete {
     public ArrayList<Mensaje> getMensajes() {
         return mensajes;
     }  
-    
+  
     public void setCodigoDestinatario(int destinatario) {
         this.codigoDestinatario = destinatario;
     }

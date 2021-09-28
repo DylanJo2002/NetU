@@ -202,19 +202,19 @@ public class GestorBDAdministrador {
 
             if (esAdministrador(codigo)) {
 
-                if (cantidadAdministradores() > 1) {
+                if (cantidadAdministradores() >= 1) {
                     int confirmacion;
 
                     confirmacion = JOptionPane.showConfirmDialog(null,
-                            "¿Está de acuerdo con eliminar"
+                            "¿Está de acuerdo con eliminar "
                             + "el Administrador con código " + codigo + "?",
                             "ELIMINAR ADMINISTRADOR", JOptionPane.YES_NO_OPTION);
 
                     eliminar = confirmacion == JOptionPane.YES_OPTION;
                 }else{
                     eliminar = false;
-                    JOptionPane.showMessageDialog(null, "DEBE HABER AL MENENOS "
-                            + "2 ADMINISTRADORES PARA ESTA ACCIÓN", "ERROR: "
+                    JOptionPane.showMessageDialog(null, "DEBE HABER AL MENOS "
+                            + "1 ADMINISTRADOR PARA ESTA ACCIÓN", "ERROR: "
                                     + "MINIMO DE ADMINISTRADORES",JOptionPane.ERROR_MESSAGE);
                 }
 
@@ -516,7 +516,7 @@ public class GestorBDAdministrador {
         PreparedStatement statement;
         ResultSet resultadoConsulta;
 
-        String consultaSQL = "SELECT COUNT(*) FROM administrador WHERE "
+        String consultaSQL = "SELECT * FROM administrador WHERE "
                 + "id_Empleado = " + codigo;
 
         try {
@@ -532,7 +532,7 @@ public class GestorBDAdministrador {
             JOptionPane.showMessageDialog(null, "EROR AL VERIFICAR SI ES ADMINISTRADOR",
                     "EROR SQL", JOptionPane.ERROR_MESSAGE);
         }
-
+        System.out.println("Es administrador: "+esAdmini);
         return esAdmini;
 
     }

@@ -5,6 +5,7 @@
 package Modelo;
 
 import Controlador.Controlador;
+import Paquetes.Chat;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -113,7 +114,10 @@ public class Conexion extends Thread {
                     case Paquete.publicaciones: {
                         controlador.cargarPublicaciones((Publicaciones) paquete);
                     } break;
-
+                    
+                    case Paquete.chat: {
+                        controlador.construirChat((Chat) paquete);
+                    } break;
                 }
             }
         } catch (IOException ex) {
