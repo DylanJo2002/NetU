@@ -5,6 +5,7 @@ package vista;
 
 import Paquetes.Publicaciones;
 import Vista.Publicacion;
+import Vista.itemCombo;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -18,10 +19,15 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class PrincipalGUI extends javax.swing.JFrame {
+    
+    private ArrayList<Vista.itemCombo> dependencias;
+    private ArrayList<ArrayList<Vista.itemCombo>> subdependencias;
 
     public PrincipalGUI() {
         //setExtendedState(MAXIMIZED_BOTH);
@@ -30,6 +36,22 @@ public class PrincipalGUI extends javax.swing.JFrame {
         setVisible(true);
     }
 
+    
+    public void setDependencias(ArrayList<itemCombo> dependencias) {
+        this.dependencias = dependencias;
+    }
+
+    public void setSubdependencias(ArrayList<ArrayList<itemCombo>> subdependencias) {
+        this.subdependencias = subdependencias;
+    }
+
+    public void llenarCbxDependencias(){
+        
+        for(itemCombo item: dependencias){
+            cbxDependecia.addItem(item);
+        }
+    }
+    
     /**
      * El propósito del método es cargar toda la información del Empleado al
      * panel del Perfil (solo su información)
@@ -273,7 +295,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_Info_PerfilLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                         .addComponent(btnModificarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pane_lbl_Informacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_Info_PerfilLayout.createSequentialGroup()
@@ -412,19 +434,19 @@ public class PrincipalGUI extends javax.swing.JFrame {
             .addGroup(panelControlPublicacionLayout.createSequentialGroup()
                 .addGroup(panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelControlPublicacionLayout.createSequentialGroup()
-                        .addContainerGap(9, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnControlPublicaciones))
                     .addGroup(panelControlPublicacionLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnEliminarPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEscribirPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelControlPublicacionLayout.setVerticalGroup(
             panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelControlPublicacionLayout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnControlPublicaciones)
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(btnEscribirPublicacion)
@@ -550,9 +572,14 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel16.setText("Nombre Empleado:");
 
-        cbxDependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS" }));
+        cbxDependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new itemCombo[] {new itemCombo(0, "TODAS") }));
+        cbxDependecia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxDependeciaActionPerformed(evt);
+            }
+        });
 
-        cbxSubdependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS" }));
+        cbxSubdependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new itemCombo[] {new itemCombo(0, "TODAS") }));
 
         btnBuscar.setText("Buscar");
 
@@ -572,8 +599,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(127, 127, 127))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBusquedaLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(cbxDependecia, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addComponent(cbxDependecia, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(cbxSubdependecia, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(txtNombreBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -764,6 +791,25 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private void btnEscribirPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscribirPublicacionActionPerformed
         escribirPublicacion(btnModificarDescripcion.getActionListeners()[0]);
     }//GEN-LAST:event_btnEscribirPublicacionActionPerformed
+
+    private void cbxDependeciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDependeciaActionPerformed
+        cbxSubdependecia.removeAllItems();
+        itemCombo item = (itemCombo) cbxDependecia.getSelectedItem();
+        int posicionFila = dependencias.indexOf(item);
+        ArrayList<itemCombo> fila;
+        cbxSubdependecia.addItem(new itemCombo(0,"TODAS"));
+        
+        if(item.getId() == 0){
+            return;
+        }
+        
+        fila = subdependencias.get(posicionFila);
+        
+        for(itemCombo index: fila){
+            cbxSubdependecia.addItem(index);
+        }
+        
+    }//GEN-LAST:event_cbxDependeciaActionPerformed
     /**
      * El propósito del método es limpiar y eliminar los checkBoxes en el array
      * y las publicacions en el Panel Contenedor. Se utiliza cada vez que se usa
@@ -903,6 +949,12 @@ public class PrincipalGUI extends javax.swing.JFrame {
     public void setDescripcionEmpleado(String descripcionEmpleado) {
         this.descripcionEmpleado = descripcionEmpleado;
     }
+    
+     public void asignarEscuchaBtnBuscar(ActionListener al) {
+
+        btnBuscar.addActionListener(al);
+
+    }
 
     public void asignarEscuchaBtnModificarDescripcion(ActionListener al) {
 
@@ -917,9 +969,13 @@ public class PrincipalGUI extends javax.swing.JFrame {
     public void asignarEscuchaAreaDescripcion(KeyListener kl) {
         txtAreaDescripcion.addKeyListener(kl);
     }
-
+    
     public JButton getBtnModificarDescripcion() {
         return btnModificarDescripcion;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
     }
 
     public EscribirPublicacion getEscribirPublicacion() {
@@ -933,6 +989,22 @@ public class PrincipalGUI extends javax.swing.JFrame {
     public String getSexo() {
         return sexo;
     }
+
+    public int getIdDependecia() {
+        itemCombo item = (itemCombo) cbxDependecia.getSelectedItem();
+        return item.getId();
+    }
+
+    public int getIdSubdependecia() {
+        itemCombo item = (itemCombo) cbxSubdependecia.getSelectedItem();
+        return item.getId();
+    }
+
+    public String getTxtNombreBusqueda() {
+        return txtNombreBusqueda.getText().trim();
+    }
+    
+    
 
     public String getTextAreaDescripcion() {
         return txtAreaDescripcion.getText().trim();
@@ -1005,8 +1077,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarPublicacion;
     private javax.swing.JButton btnEscribirPublicacion;
     private javax.swing.JButton btnModificarDescripcion;
-    private javax.swing.JComboBox<String> cbxDependecia;
-    private javax.swing.JComboBox<String> cbxSubdependecia;
+    private javax.swing.JComboBox<itemCombo> cbxDependecia;
+    private javax.swing.JComboBox<itemCombo> cbxSubdependecia;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel10;

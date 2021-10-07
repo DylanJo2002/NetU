@@ -14,9 +14,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import Paquetes.Paquete;
 import Paquetes.PetIniciarSesion;
+import Paquetes.PeticionBusqueda;
 import Paquetes.Publicacion;
 import Paquetes.Publicaciones;
 import Paquetes.ResIniciarSesion;
+import Paquetes.RespuestaBusqueda;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -179,6 +181,22 @@ public class Servidor extends Thread {
                         publicaciones.setTipo(Paquete.publicaciones);
                         enviarPaquete(publicaciones);
                         
+                    }else{
+                        
+                    if(paquete.getTipo() == Paquete.peticionBusqueda){
+                        PeticionBusqueda petBusqueda;
+                        petBusqueda = (PeticionBusqueda) paquete;
+                        
+                        RespuestaBusqueda resBusqueda;
+                        resBusqueda = new RespuestaBusqueda(gestorEmpleado.buscarEmpleados(
+                                petBusqueda.getIdDependencia(), 
+                                petBusqueda.getIdSubdependencia(),
+                                petBusqueda.getNombreEmpleado()));
+                        
+                        resBusqueda.setTipo(Paquete.respuestaBusqueda);
+                        enviarPaquete(resBusqueda);
+        
+                    }
                     }
                         
                     }    

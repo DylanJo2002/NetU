@@ -12,11 +12,14 @@ import Paquetes.PetIniciarSesion;
 import Paquetes.ResIniciarSesion;
 import Paquetes.CambiarDescripcion;
 import Paquetes.EliminarPublicacion;
+import Paquetes.PeticionBusqueda;
 import Paquetes.Publicacion;
 import Paquetes.Publicaciones;
+import Vista.itemCombo;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -52,7 +55,6 @@ public class Controlador implements ActionListener, KeyListener {
      * cuando se haya hecho login.
      */
     public void iniciarPrincipalGUI(ResIniciarSesion resIniciarSesion) { 
-        JOptionPane.showMessageDialog(null, "Hola");
         login.cerrar();
         principalGUI = new PrincipalGUI();
         asignarEscuchasVentanaPrincipal();
@@ -65,12 +67,18 @@ public class Controlador implements ActionListener, KeyListener {
 
         principalGUI.cargarPublicaciones(resIniciarSesion.getPublicaciones());
         
+        principalGUI.setDependencias(resIniciarSesion.getDependencias());
+        principalGUI.setSubdependencias(resIniciarSesion.getSubdependencias());
+        
+        principalGUI.llenarCbxDependencias();
+        
     }
 
     public void asignarEscuchasVentanaPrincipal() {
         principalGUI.asignarEscuchaAreaDescripcion(this);
         principalGUI.asignarEscuchaBtnModificarDescripcion(this);
         principalGUI.asignarEscuchaBtnEliminarPublicacion(this);
+        principalGUI.asignarEscuchaBtnBuscar(this);
     }
 
     @Override
@@ -209,6 +217,19 @@ public class Controlador implements ActionListener, KeyListener {
                 }
 
             }
+            
+            if(e.getSource().equals(principalGUI.getBtnBuscar())){
+                
+                int idDependencia = principalGUI.getIdDependecia();
+                int idSubdependencia = principalGUI.getIdSubdependecia();
+                String nombre = principalGUI.getTxtNombreBusqueda();
+                
+                PeticionBusqueda petBusqueda;
+                petBusqueda = new PeticionBusqueda(idDependencia, idSubdependencia, nombre);
+                petBusqueda.setTipo(Paquete.peticionBusqueda);
+                
+                conexion.enviarPaquete(petBusqueda);
+            }
 
         }
 
@@ -226,7 +247,22 @@ public class Controlador implements ActionListener, KeyListener {
         if (resIniciarSesion.getExito() != 10) {
 
             iniciarPrincipalGUI(resIniciarSesion);
+            /*ArrayList<itemCombo> dep = resIniciarSesion.getDependencias();
+            ArrayList<ArrayList<itemCombo>> subDep = resIniciarSesion.getSubdependencias();
 
+            for(itemCombo item: dep){
+                System.out.print(item.getNombre()+ "  ");   
+            }
+            
+            
+            for(ArrayList<itemCombo> fila: subDep){
+                System.out.print(subDep.indexOf(fila) + "   ");
+                
+                for(itemCombo item: fila){
+                    System.out.print(item.getNombre());
+                }
+            }*/
+            
         } else {
             login.desplegarMensaje(1, "Error al iniciar sesión",
                     resIniciarSesion.getMensaje());
