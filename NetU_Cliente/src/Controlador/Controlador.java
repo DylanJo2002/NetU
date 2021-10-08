@@ -15,6 +15,7 @@ import Paquetes.EliminarPublicacion;
 import Paquetes.PeticionBusqueda;
 import Paquetes.Publicacion;
 import Paquetes.Publicaciones;
+import Vista.Empleado;
 import Vista.itemCombo;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -274,6 +275,10 @@ public class Controlador implements ActionListener, KeyListener {
 
         principalGUI.cargarPublicaciones(publicaciones);
 
+    }
+    
+    public void cargarEmpleados(List<Empleado> empleados){
+        principalGUI.cargarEmpleados(empleados);
     }
 
     /**

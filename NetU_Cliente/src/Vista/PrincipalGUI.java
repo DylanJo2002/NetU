@@ -4,7 +4,9 @@
 package vista;
 
 import Paquetes.Publicaciones;
+import Vista.Empleado;
 import Vista.Publicacion;
+import Vista.TMEmpleado;
 import Vista.itemCombo;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,6 +15,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
@@ -24,13 +27,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+
 public class PrincipalGUI extends javax.swing.JFrame {
     
     private ArrayList<Vista.itemCombo> dependencias;
     private ArrayList<ArrayList<Vista.itemCombo>> subdependencias;
-
+    private TMEmpleado tableModel;
+    
     public PrincipalGUI() {
         //setExtendedState(MAXIMIZED_BOTH);
+        tableModel = new TMEmpleado();
         initComponents();
         checkBoxesPublicaciones = new ArrayList();
         setVisible(true);
@@ -197,7 +203,24 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tablaBusqueda = new javax.swing.JTable();
+        tablaBusqueda = new javax.swing.JTable(){
+
+            public String getToolTipText(MouseEvent e) {
+                String tip = null;
+                java.awt.Point p = e.getPoint();
+                int rowIndex = rowAtPoint(p);
+                int colIndex = columnAtPoint(p);
+
+                try {
+                    tip = getValueAt(rowIndex, colIndex).toString();
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+
+                return tip;
+
+            }
+        };
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
@@ -295,7 +318,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_Info_PerfilLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                         .addComponent(btnModificarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(pane_lbl_Informacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_Info_PerfilLayout.createSequentialGroup()
@@ -635,25 +658,15 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel18.setText("Resultado de la Búsqueda");
 
-        tablaBusqueda.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Correo Electronico", "Dependencia", "Subdependencia", "Sexo"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        tablaBusqueda.setModel(tableModel);
         jScrollPane3.setViewportView(tablaBusqueda);
 
         jButton4.setText("Ver Perfil");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Enviar mensaje");
 
@@ -810,6 +823,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_cbxDependeciaActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
     /**
      * El propósito del método es limpiar y eliminar los checkBoxes en el array
      * y las publicacions en el Panel Contenedor. Se utiliza cada vez que se usa
@@ -1064,6 +1081,23 @@ public class PrincipalGUI extends javax.swing.JFrame {
 
         return icono;
     }
+    
+    public void cargarEmpleados(List<Empleado> empleados) {
+        tableModel.setEmpleados(empleados);
+        try{
+            tablaBusqueda.updateUI();
+        }catch(Exception e){
+            return;
+        }
+    }
+    
+    public Empleado getEmpleadoFromTable() {
+
+        Empleado empleado = tableModel.getEmpleadoAt(tablaBusqueda.getSelectedRow());
+
+        return empleado;
+    }
+    
     private EscribirPublicacion escribirPublicacion;
     private ArrayList<JCheckBox> checkBoxesPublicaciones;
     private String descripcionEmpleado;

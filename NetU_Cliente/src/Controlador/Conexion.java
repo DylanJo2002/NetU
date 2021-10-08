@@ -119,12 +119,7 @@ public class Conexion extends Thread {
                         
                         RespuestaBusqueda resBusqueda;
                         resBusqueda = (RespuestaBusqueda) paquete;
-                        
-                        for(Empleado emp: resBusqueda.getEmpleados()){
-                            
-                            String empleado = emp.getNombre() + " _ " + emp.getNombreDependencia() + " _ " + emp.getNombreSubdependencia();
-                            System.out.print(empleado + "\n");
-                        }
+                        controlador.cargarEmpleados(resBusqueda.getEmpleados());
                         
                     } break;
                 }
