@@ -214,10 +214,17 @@ public class Servidor extends Thread {
                         chatActual.setTipo(Paquete.chat);
                         enviarPaquete(gestorEmpleado.contruirChat(chatActual, codigo));
                         HiloEmpleado empDestinatario = 
-                                buscarEmpleado(mensaje.getCodigoDestinatario());
-                        if(empDestinatario != null){
-                            enviarChat(empDestinatario, codigo);
+                            buscarEmpleado(mensaje.getCodigoDestinatario());
+                        if(empDestinatario != null && 
+                                gestorEmpleado.chatAbierto(mensaje.
+                                        getCodigoDestinatario(), codigo)){
+                                enviarChat(empDestinatario, codigo);
                         }
+                        
+                    }else{
+                    if(paquete.getTipo() == Paquete.cerrarChat){
+                        gestorEmpleado.cerrarChat(codigo);
+                    }
                     }
                     }
                     }                     

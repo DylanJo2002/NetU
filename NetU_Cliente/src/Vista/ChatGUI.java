@@ -6,20 +6,15 @@
 package vista;
 
 import Paquetes.Mensaje;
-import java.awt.Adjustable;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JScrollBar;
+import javax.swing.JButton;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -166,6 +161,10 @@ public class ChatGUI extends javax.swing.JFrame {
         txtMensage.addKeyListener(kl);
     }
     
+    public void setActionListener(ActionListener al){
+        btnEnviar.addActionListener(al);
+    }
+    
     public void setWindowsListener(WindowListener wl){
         addWindowListener(wl);
     }
@@ -173,6 +172,12 @@ public class ChatGUI extends javax.swing.JFrame {
     public void saltoLineaMensaje(){
         txtMensage.setText(obtenerMensaje().concat("\n"));
     }
+
+    public JButton getBtnEnviar() {
+        return btnEnviar;
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelContenedor;
     private javax.swing.JButton btnEnviar;

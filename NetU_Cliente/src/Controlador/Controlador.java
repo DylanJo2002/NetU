@@ -238,6 +238,12 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
             }
 
         }
+        
+        if(chatGui != null){
+            if(e.getSource().equals(chatGui.getBtnEnviar())){
+                enviarMensaje();
+            }
+        }
 
     }
 
@@ -266,6 +272,21 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         principalGUI.cargarPublicaciones(publicaciones);
 
     }
+    
+    public void enviarMensaje(){
+        String mensaje =  chatGui.obtenerMensaje();
+        if(mensaje.isEmpty()){
+            principalGUI.desplegarMensajeDialogo(1,"Mensaje vacío",
+                    "Asegúrese de escribir algo antes de enviar un mensaje");
+            return;
+        }
+        EnvioMensaje paqueteMensaje = new EnvioMensaje(mensaje,
+        chatGui.getCodigoDestinatario());
+        paqueteMensaje.setTipo(Paquete.envioMensaje);
+        conexion.enviarPaquete(paqueteMensaje);
+        chatGui.limpiarTxtMensaje();
+        System.out.println("Mensaje enviado");
+    }
 
     public void construirChat(Chat chat){
         if(chatGui == null){
@@ -273,6 +294,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                     chat.getMensajes(),chat.getCodigoDestinatario());
             chatGui.setKeyListener(this);
             chatGui.setWindowsListener(this);
+            chatGui.setActionListener(this);
             return;
         }
         
@@ -339,17 +361,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                 chatGui.saltoLineaMensaje();
             } else {
                 if(e.getKeyCode()==KeyEvent.VK_ENTER){
-                    String mensaje =  chatGui.obtenerMensaje();
-                    if(mensaje.isEmpty()){
-                        return;
-                    }
-                    EnvioMensaje paqueteMensaje = new EnvioMensaje(mensaje,
-                        chatGui.getCodigoDestinatario());
-                    paqueteMensaje.setTipo(Paquete.envioMensaje);
-                    conexion.enviarPaquete(paqueteMensaje);
-                    chatGui.limpiarTxtMensaje();
-                    System.out.println("Mensaje enviado");
-                    return;
+                    enviarMensaje();
                 }
             }           
             chatKeyPressed = e.getKeyCode();
@@ -367,7 +379,9 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
 
     @Override
     public void windowClosing(WindowEvent e) {
-        System.out.print("HELLO");
+        Paquete cerrarChat = new Paquete();
+        cerrarChat.setTipo(Paquete.cerrarChat);
+        conexion.enviarPaquete(cerrarChat);
         chatGui.dispose();
         chatGui = null;
     }

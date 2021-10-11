@@ -117,6 +117,7 @@ public class Conexion extends Thread {
                     
                     case Paquete.chat: {
                         controlador.construirChat((Chat) paquete);
+                        System.out.println("RECIBÍ CHAT");
                     } break;
                 }
             }

@@ -16,6 +16,7 @@ public class Paquete implements Serializable {
     public static final int eliminarPublicacion = 6;
     public static final int envioMensaje = 19;
     public static final int chat = 18;
+    public static final int cerrarChat = 20;
     public static final int error = 10;
 
     private int tipo;

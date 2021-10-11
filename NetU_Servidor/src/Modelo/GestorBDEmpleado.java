@@ -13,6 +13,8 @@ import Paquetes.Paquete;
 import Paquetes.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GestorBDEmpleado {
 
@@ -246,6 +248,15 @@ public class GestorBDEmpleado {
         String consultarChat = "SELECT * FROM mensaje WHERE codigo_Empleado_1 "
                 + conjunto + " OR codigo_Empleado_2 "+conjunto
                 + " ORDER BY fecha, hora ASC";
+        String crearChatEmisor = "INSERT INTO chat values('"+codigoEmpleado+"','"
+                +chat.getCodigoDestinatario()+"',1)";
+        String crearChatReceptor = "INSERT INTO chat values('"+
+                chat.getCodigoDestinatario()+"','" +codigoEmpleado+"',0)";
+        String actualizarEstado = "UPDATE chat set abierto = 1 WHERE "
+                + "codigo_Empleado_1 = "+codigoEmpleado+" AND codigo_Empleado_2"
+                + " = "+chat.getCodigoDestinatario();
+        String existeChat = "SELECT * FROM chat WHERE codigo_Empleado_1 "
+                +conjunto+" OR codigo_Empleado_2 "+conjunto;
         
         ResultSet resultChat = ejecutarQuery(consultarChat);
         try {
@@ -263,10 +274,19 @@ public class GestorBDEmpleado {
             }
             
             chat.setMensajes(mensajes);
+            
+            ResultSet consultaExisteChat = ejecutarQuery(existeChat);
+            if(consultaExisteChat.next()){
+                ejecutarUpdate(actualizarEstado);
+            }else{
+                ejecutarUpdate(crearChatEmisor);
+                ejecutarUpdate(crearChatReceptor);
+            }            
         } catch (SQLException ex) {
             System.out.println("Error al recorrer la consulta en CHAT");
             return null;
         }
+
         
         return chat;
     };
@@ -281,11 +301,33 @@ public class GestorBDEmpleado {
         ejecutarUpdate(insercion);
     }
     
+    public boolean chatAbierto(int codigoEmisor, int codigoReceptor){
+        String consulta = "SELECT * FROM chat where codigo_Empleado_1 = "
+                +codigoEmisor+" AND codigo_Empleado_2 = "+codigoReceptor
+                +" AND abierto = 1";
+        ResultSet resultado = ejecutarQuery(consulta);
+        try {
+            if(resultado.next()){
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al verificar el chat abierto: "+ex.getMessage());
+        }
+        return false;
+    }
+    
+    public void cerrarChat(int codigoEmisor){
+        String actualizarEstado = "UPDATE chat set abierto = 0 WHERE "
+                + "codigo_Empleado_1 = "+codigoEmisor+" AND abierto = 1";
+        ejecutarUpdate(actualizarEstado);
+    }
+    
     /**
      * El propósito del método es ejecutar una actualización SQL.
      *
      * @param update El Update SQL que se quiere realizar
      */
+    
     public void ejecutarUpdate(String update) {
         System.out.println(update);
         PreparedStatement stment;
