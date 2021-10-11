@@ -208,11 +208,11 @@ public class Controlador implements ActionListener, KeyListener {
                 List<Integer> idPublicaciones;
                 idPublicaciones = principalGUI.obtenerPublicacionesSeleccionadas();
                 String usted = "";
-                if (principalGUI.getSexo().equals("Masculino")) {
+                /*if (principalGUI.getSexo().equals("Masculino")) {
                     usted = "seguro";
                 } else {
                     usted = "segura";
-                }
+                }*/
                 if (idPublicaciones != null) {
                     if (idPublicaciones.size() > 0) {
                         int respuesta = principalGUI.desplegarMensajeConfirmacion(
@@ -312,8 +312,7 @@ public class Controlador implements ActionListener, KeyListener {
     }
     
     public void agregarFotoLocal() {
-        JFileChooser j = new JFileChooser("C:\\Users\\danie\\Desktop"
-                + "\\Imagenes Perfiles");
+        JFileChooser j = new JFileChooser("src\\Imagenes Perfiles");
         FileNameExtensionFilter fil = new FileNameExtensionFilter("JPEG,JPG, "
                 + "PNG & GIF", "jpg", "png", "gif", "jpeg");
         j.setFileFilter(fil);

@@ -364,7 +364,7 @@ public class PerfilUsuarios extends javax.swing.JFrame {
 
         for (Paquetes.Publicacion publicacionPaquete : listaPublicaciones) {
 
-            Publicacion publicacion = new Publicacion(publicacionPaquete.getId_Publicacion(),
+            PublicacionPerfil publicacion = new PublicacionPerfil(
                     publicacionPaquete.getFecha(), publicacionPaquete.getHora(),
                     publicacionPaquete.getContenido());
 
