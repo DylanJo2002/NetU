@@ -2,8 +2,10 @@
  * El propósito de la clase es gestionar todo lo relacionado a la conexión
  * por medio de Socket con NetU Servidor
  */
-package Controlador;
+package Modelo;
 
+import Controlador.Controlador;
+import Paquetes.Chat;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -115,12 +117,18 @@ public class Conexion extends Thread {
                         controlador.cargarPublicaciones((Publicaciones) paquete);
                     } break;
                     
+<<<<<<< HEAD:NetU_Cliente/src/Controlador/Conexion.java
                     case Paquete.respuestaBusqueda: {
                         
                         RespuestaBusqueda resBusqueda;
                         resBusqueda = (RespuestaBusqueda) paquete;
                         controlador.cargarEmpleados(resBusqueda.getEmpleados());
                         
+=======
+                    case Paquete.chat: {
+                        controlador.construirChat((Chat) paquete);
+                        System.out.println("RECIBÍ CHAT");
+>>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f:NetU_Cliente/src/Modelo/Conexion.java
                     } break;
                 }
             }

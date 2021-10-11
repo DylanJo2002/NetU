@@ -220,7 +220,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
             }
         };
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnEnviarMensaje = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         panelNotificaciones = new javax.swing.JPanel(){
@@ -667,7 +667,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("Enviar mensaje");
+        btnEnviarMensaje.setText("Enviar mensaje");
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel19.setText("Antes de dar click en cualquier boton, seleccionar un Empleado de la tabla");
@@ -694,7 +694,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                         .addGap(474, 474, 474)
                         .addComponent(jButton4)
                         .addGap(292, 292, 292)
-                        .addComponent(jButton5))
+                        .addComponent(btnEnviarMensaje))
                     .addGroup(panelBuscadorLayout.createSequentialGroup()
                         .addGap(487, 487, 487)
                         .addComponent(jLabel20)
@@ -716,7 +716,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
@@ -973,9 +973,11 @@ public class PrincipalGUI extends javax.swing.JFrame {
     }
 
     public void asignarEscuchaBtnModificarDescripcion(ActionListener al) {
-
         btnModificarDescripcion.addActionListener(al);
-
+    }
+    
+    public void asignarEscuchaBtnEnviarMensaje(ActionListener al){
+        btnEnviarMensaje.addActionListener(al);
     }
 
     public void asignarEscuchaBtnEliminarPublicacion(ActionListener al) {
@@ -1025,6 +1027,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
     public String getTextAreaDescripcion() {
         return txtAreaDescripcion.getText().trim();
     }
+
+    public JButton getBtnEnviarMensaje() {
+        return btnEnviarMensaje;
+    }  
 
     public JButton getBtnEliminarPublicacion() {
         return btnEliminarPublicacion;
@@ -1104,12 +1110,12 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarMensaje;
     private javax.swing.JButton btnControlPublicaciones;
     private javax.swing.JButton btnEliminarPublicacion;
+    private javax.swing.JButton btnEnviarMensaje;
     private javax.swing.JButton btnEscribirPublicacion;
     private javax.swing.JButton btnModificarDescripcion;
     private javax.swing.JComboBox<itemCombo> cbxDependecia;
     private javax.swing.JComboBox<itemCombo> cbxSubdependecia;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
