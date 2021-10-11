@@ -188,10 +188,12 @@ public class Servidor extends Thread {
                         petBusqueda = (PeticionBusqueda) paquete;
                         
                         RespuestaBusqueda resBusqueda;
-                        resBusqueda = new RespuestaBusqueda(gestorEmpleado.buscarEmpleados(
+                        resBusqueda = new RespuestaBusqueda(
+                                gestorEmpleado.buscarEmpleados(
                                 petBusqueda.getIdDependencia(), 
                                 petBusqueda.getIdSubdependencia(),
-                                petBusqueda.getNombreEmpleado()));
+                                petBusqueda.getNombreEmpleado(),
+                                codigo));
                         
                         resBusqueda.setTipo(Paquete.respuestaBusqueda);
                         enviarPaquete(resBusqueda);

@@ -22,10 +22,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 
 public class PrincipalGUI extends javax.swing.JFrame {
@@ -202,7 +200,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        scrollTable = new javax.swing.JScrollPane();
         tablaBusqueda = new javax.swing.JTable(){
 
             public String getToolTipText(MouseEvent e) {
@@ -659,7 +657,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel18.setText("Resultado de la Búsqueda");
 
         tablaBusqueda.setModel(tableModel);
-        jScrollPane3.setViewportView(tablaBusqueda);
+        tablaBusqueda.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        scrollTable.setViewportView(tablaBusqueda);
 
         jButton4.setText("Ver Perfil");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -690,7 +689,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                         .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel18)
                             .addComponent(panelBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3)))
+                            .addComponent(scrollTable)))
                     .addGroup(panelBuscadorLayout.createSequentialGroup()
                         .addGap(474, 474, 474)
                         .addComponent(jButton4)
@@ -713,7 +712,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(53, 53, 53)
                 .addComponent(jLabel18)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1084,11 +1083,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     
     public void cargarEmpleados(List<Empleado> empleados) {
         tableModel.setEmpleados(empleados);
-        try{
-            tablaBusqueda.updateUI();
-        }catch(Exception e){
-            return;
-        }
+        tablaBusqueda.updateUI();
     }
     
     public Empleado getEmpleadoFromTable() {
@@ -1132,7 +1127,6 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JLabel lblCorreo;
@@ -1161,6 +1155,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JPanel panelPublicaciones;
     private javax.swing.JPanel panel_Info_Perfil;
     private javax.swing.JScrollPane scrollPanePublicaciones;
+    private javax.swing.JScrollPane scrollTable;
     private javax.swing.JTable tablaBusqueda;
     private javax.swing.JTextArea txtAreaDescripcion;
     private javax.swing.JTextArea txtAreaNotificaciones;

@@ -362,7 +362,8 @@ public class GestorBDEmpleado {
      * @param nombre nombre del empleado a buscar
      * @return ArrayList, lista de objetos Empleado
      */
-    public List<Empleado> buscarEmpleados(int dep, int sub, String nombre) {
+    public List<Empleado> buscarEmpleados(int dep, int sub, String nombre,
+            int empleadoExcepcion) {
 
         Connection con = null;
         PreparedStatement pstm = null;
@@ -395,6 +396,7 @@ public class GestorBDEmpleado {
                             + "where e.dependencia = d.id_Dependencia\n"
                             + "and e.subdependencia = s.id_Subdependencia\n"
                             + "and e.nombre like " + nombre + "\n"
+                            + "and e.codigo_Empleado != " + empleadoExcepcion + "\n"
                             + "order by e.codigo_Empleado ;";
 
                 }
@@ -409,6 +411,7 @@ public class GestorBDEmpleado {
                         + "and e.dependencia = " + dep + "\n"
                         + "and e.subdependencia = s.id_Subdependencia\n"
                         + "and e.nombre like " + nombre + "\n"
+                        + "and e.codigo_Empleado != " + empleadoExcepcion + "\n"
                         + "order by e.codigo_Empleado ;";
 
             } else {
@@ -422,6 +425,7 @@ public class GestorBDEmpleado {
                         + "and e.subdependencia = s.id_Subdependencia\n"
                         + "and e.subdependencia = " + sub + "\n"
                         + "and e.nombre like " + nombre + "\n"
+                        + "and e.codigo_Empleado != " + empleadoExcepcion + "\n"
                         + "order by e.codigo_Empleado ;";
 
             }
