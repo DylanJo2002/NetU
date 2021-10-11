@@ -12,7 +12,7 @@ public class ConexionBD {
     
     public static Connection coneccion;
     static final String driver = "com.mysql.cj.jdbc.Driver";
-    static final String user = "DylanJBC";
+    static final String user = "root";
     static final String password = "MySQL2021";
     static final String url = "jdbc:mysql://localhost:3306/sistemanetu?serverTimezone=UTC";
     /**

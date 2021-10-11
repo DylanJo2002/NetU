@@ -1,9 +1,1 @@
-**/nbproject/private/
-**/nbproject/Makefile-*.mk
-**/nbproject/Package-*.bash
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-NetU_Servidor/src/Modelo/ConexionBD.java
+

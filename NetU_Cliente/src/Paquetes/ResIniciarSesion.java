@@ -4,12 +4,18 @@
  */
 package Paquetes;
 
+import Vista.itemCombo;
+import java.util.ArrayList;
+
 public class ResIniciarSesion extends Paquete {
     
     private int exito;
     private String mensaje;
     private Perfil perfil;
     private Publicaciones publicaciones;
+    private ArrayList<itemCombo> dependencias;
+    private ArrayList<ArrayList<itemCombo>> subdependencias;
+    
     /**
      * El propósito del método es devolver el valor del éxito.
      * @return Un entero que define si el inicio de sesión fue exitoso si es 0
@@ -61,6 +67,23 @@ public class ResIniciarSesion extends Paquete {
     public void setPublicaciones(Publicaciones publicaciones) {
         this.publicaciones = publicaciones;
     }
+
+    public ArrayList<itemCombo> getDependencias() {
+        return dependencias;
+    }
+
+    public void setDependencias(ArrayList<itemCombo> dependencias) {
+        this.dependencias = dependencias;
+    }
+
+    public ArrayList<ArrayList<itemCombo>> getSubdependencias() {
+        return subdependencias;
+    }
+
+    public void setSubdependencias(ArrayList<ArrayList<itemCombo>> subdependencias) {
+        this.subdependencias = subdependencias;
+    }
+    
     
     
 

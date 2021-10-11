@@ -4,7 +4,10 @@
 package vista;
 
 import Paquetes.Publicaciones;
+import Vista.Empleado;
 import Vista.Publicacion;
+import Vista.TMEmpleado;
+import Vista.itemCombo;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -12,6 +15,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
@@ -21,15 +25,37 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
-public class PrincipalGUI extends javax.swing.JFrame {
 
+public class PrincipalGUI extends javax.swing.JFrame {
+    
+    private ArrayList<Vista.itemCombo> dependencias;
+    private ArrayList<ArrayList<Vista.itemCombo>> subdependencias;
+    private TMEmpleado tableModel;
+    
     public PrincipalGUI() {
         //setExtendedState(MAXIMIZED_BOTH);
+        tableModel = new TMEmpleado();
         initComponents();
         checkBoxesPublicaciones = new ArrayList();
         setVisible(true);
     }
 
+    
+    public void setDependencias(ArrayList<itemCombo> dependencias) {
+        this.dependencias = dependencias;
+    }
+
+    public void setSubdependencias(ArrayList<ArrayList<itemCombo>> subdependencias) {
+        this.subdependencias = subdependencias;
+    }
+
+    public void llenarCbxDependencias(){
+        
+        for(itemCombo item: dependencias){
+            cbxDependecia.addItem(item);
+        }
+    }
+    
     /**
      * El propósito del método es cargar toda la información del Empleado al
      * panel del Perfil (solo su información)
@@ -174,8 +200,25 @@ public class PrincipalGUI extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tablaBusqueda = new javax.swing.JTable();
+        scrollTable = new javax.swing.JScrollPane();
+        tablaBusqueda = new javax.swing.JTable(){
+
+            public String getToolTipText(MouseEvent e) {
+                String tip = null;
+                java.awt.Point p = e.getPoint();
+                int rowIndex = rowAtPoint(p);
+                int colIndex = columnAtPoint(p);
+
+                try {
+                    tip = getValueAt(rowIndex, colIndex).toString();
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+
+                return tip;
+
+            }
+        };
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
@@ -412,19 +455,19 @@ public class PrincipalGUI extends javax.swing.JFrame {
             .addGroup(panelControlPublicacionLayout.createSequentialGroup()
                 .addGroup(panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelControlPublicacionLayout.createSequentialGroup()
-                        .addContainerGap(9, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnControlPublicaciones))
                     .addGroup(panelControlPublicacionLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnEliminarPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEscribirPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelControlPublicacionLayout.setVerticalGroup(
             panelControlPublicacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelControlPublicacionLayout.createSequentialGroup()
-                .addContainerGap(9, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnControlPublicaciones)
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(btnEscribirPublicacion)
@@ -550,9 +593,14 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel16.setText("Nombre Empleado:");
 
-        cbxDependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS" }));
+        cbxDependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new itemCombo[] {new itemCombo(0, "TODAS") }));
+        cbxDependecia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxDependeciaActionPerformed(evt);
+            }
+        });
 
-        cbxSubdependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS" }));
+        cbxSubdependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new itemCombo[] {new itemCombo(0, "TODAS") }));
 
         btnBuscar.setText("Buscar");
 
@@ -572,8 +620,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(127, 127, 127))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBusquedaLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
-                .addComponent(cbxDependecia, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addComponent(cbxDependecia, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(cbxSubdependecia, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(txtNombreBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -608,25 +656,16 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel18.setText("Resultado de la Búsqueda");
 
-        tablaBusqueda.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nombre", "Correo Electronico", "Dependencia", "Subdependencia", "Sexo"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(tablaBusqueda);
+        tablaBusqueda.setModel(tableModel);
+        tablaBusqueda.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        scrollTable.setViewportView(tablaBusqueda);
 
         jButton4.setText("Ver Perfil");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Enviar mensaje");
 
@@ -650,7 +689,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                         .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel18)
                             .addComponent(panelBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3)))
+                            .addComponent(scrollTable)))
                     .addGroup(panelBuscadorLayout.createSequentialGroup()
                         .addGap(474, 474, 474)
                         .addComponent(jButton4)
@@ -673,7 +712,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(53, 53, 53)
                 .addComponent(jLabel18)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -764,6 +803,29 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private void btnEscribirPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEscribirPublicacionActionPerformed
         escribirPublicacion(btnModificarDescripcion.getActionListeners()[0]);
     }//GEN-LAST:event_btnEscribirPublicacionActionPerformed
+
+    private void cbxDependeciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDependeciaActionPerformed
+        cbxSubdependecia.removeAllItems();
+        itemCombo item = (itemCombo) cbxDependecia.getSelectedItem();
+        int posicionFila = dependencias.indexOf(item);
+        ArrayList<itemCombo> fila;
+        cbxSubdependecia.addItem(new itemCombo(0,"TODAS"));
+        
+        if(item.getId() == 0){
+            return;
+        }
+        
+        fila = subdependencias.get(posicionFila);
+        
+        for(itemCombo index: fila){
+            cbxSubdependecia.addItem(index);
+        }
+        
+    }//GEN-LAST:event_cbxDependeciaActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
     /**
      * El propósito del método es limpiar y eliminar los checkBoxes en el array
      * y las publicacions en el Panel Contenedor. Se utiliza cada vez que se usa
@@ -903,6 +965,12 @@ public class PrincipalGUI extends javax.swing.JFrame {
     public void setDescripcionEmpleado(String descripcionEmpleado) {
         this.descripcionEmpleado = descripcionEmpleado;
     }
+    
+     public void asignarEscuchaBtnBuscar(ActionListener al) {
+
+        btnBuscar.addActionListener(al);
+
+    }
 
     public void asignarEscuchaBtnModificarDescripcion(ActionListener al) {
 
@@ -917,9 +985,13 @@ public class PrincipalGUI extends javax.swing.JFrame {
     public void asignarEscuchaAreaDescripcion(KeyListener kl) {
         txtAreaDescripcion.addKeyListener(kl);
     }
-
+    
     public JButton getBtnModificarDescripcion() {
         return btnModificarDescripcion;
+    }
+
+    public JButton getBtnBuscar() {
+        return btnBuscar;
     }
 
     public EscribirPublicacion getEscribirPublicacion() {
@@ -933,6 +1005,22 @@ public class PrincipalGUI extends javax.swing.JFrame {
     public String getSexo() {
         return sexo;
     }
+
+    public int getIdDependecia() {
+        itemCombo item = (itemCombo) cbxDependecia.getSelectedItem();
+        return item.getId();
+    }
+
+    public int getIdSubdependecia() {
+        itemCombo item = (itemCombo) cbxSubdependecia.getSelectedItem();
+        return item.getId();
+    }
+
+    public String getTxtNombreBusqueda() {
+        return txtNombreBusqueda.getText().trim();
+    }
+    
+    
 
     public String getTextAreaDescripcion() {
         return txtAreaDescripcion.getText().trim();
@@ -992,6 +1080,19 @@ public class PrincipalGUI extends javax.swing.JFrame {
 
         return icono;
     }
+    
+    public void cargarEmpleados(List<Empleado> empleados) {
+        tableModel.setEmpleados(empleados);
+        tablaBusqueda.updateUI();
+    }
+    
+    public Empleado getEmpleadoFromTable() {
+
+        Empleado empleado = tableModel.getEmpleadoAt(tablaBusqueda.getSelectedRow());
+
+        return empleado;
+    }
+    
     private EscribirPublicacion escribirPublicacion;
     private ArrayList<JCheckBox> checkBoxesPublicaciones;
     private String descripcionEmpleado;
@@ -1005,8 +1106,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarPublicacion;
     private javax.swing.JButton btnEscribirPublicacion;
     private javax.swing.JButton btnModificarDescripcion;
-    private javax.swing.JComboBox<String> cbxDependecia;
-    private javax.swing.JComboBox<String> cbxSubdependecia;
+    private javax.swing.JComboBox<itemCombo> cbxDependecia;
+    private javax.swing.JComboBox<itemCombo> cbxSubdependecia;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel10;
@@ -1026,7 +1127,6 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JLabel lblCorreo;
@@ -1055,6 +1155,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JPanel panelPublicaciones;
     private javax.swing.JPanel panel_Info_Perfil;
     private javax.swing.JScrollPane scrollPanePublicaciones;
+    private javax.swing.JScrollPane scrollTable;
     private javax.swing.JTable tablaBusqueda;
     private javax.swing.JTextArea txtAreaDescripcion;
     private javax.swing.JTextArea txtAreaNotificaciones;

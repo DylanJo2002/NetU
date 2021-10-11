@@ -11,8 +11,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import Paquetes.Paquete;
 import Paquetes.*;
+import Vista.Empleado;
+import Vista.itemCombo;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class GestorBDEmpleado {
 
@@ -62,6 +66,8 @@ public class GestorBDEmpleado {
             if (mensaje.isEmpty()) {
                 respuesta.setPerfil(construirPerfil(new Perfil(peticion.getCodigo())));
                 respuesta.setPublicaciones(listarPublicaciones(peticion.getCodigo()));
+                respuesta.setDependencias(consultarDependencias());
+                respuesta.setSubdependencias(consultarSubdependencias(respuesta.getDependencias()));
                 cambiarEstadoEmpleado(peticion.getCodigo(), true);
             } else {
 
@@ -265,12 +271,197 @@ public class GestorBDEmpleado {
         }
 
     }
+    
+    
+    /**
+     * El propósito del método es consultar todas las dependencias desde la
+     * BBDD.
+     *
+     * @return Un ResultSet que incluye las dependencias por ID y Nombre
+     */
+    public ArrayList<itemCombo> consultarDependencias() {
 
-    public static void main(String[] args) {
-        List<Integer> lista = new ArrayList();
+        Connection con = ConexionBD.coneccion;
+        String consulta = "SELECT id_Dependencia as id, nombre_Dependencia as nombre FROM dependencia";
+        ResultSet resultado = null;
+        ArrayList<itemCombo> dependencias;
+        dependencias = new ArrayList<itemCombo>();
 
-        lista.add(1);
-        System.out.println(lista);
+        try {
+            PreparedStatement statement = con.prepareStatement(consulta);
+
+            resultado = statement.executeQuery();
+            
+            while(resultado.next()){
+                itemCombo item = new itemCombo(resultado.getInt("id"), resultado.getString("nombre"));
+                dependencias.add(item);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR AL CONSULTAR DEPENDENCIA " + ex.getMessage());
+        }
+
+        
+        return dependencias;
+
     }
 
+    /**
+     * El propósito del método es consultar las subdependencias pertenecientes a
+     * una dependencia
+     *
+     * @param id_Dependencia El ID de la dependencia a la que pertenece la
+     * subdependencia
+     * @return Un ResultSet con el ID y Nombre de las subdependenicas que le
+     * pertenecen a la dependencia indicada.
+     */
+    public ArrayList<ArrayList<itemCombo>> consultarSubdependencias(ArrayList<itemCombo> dependencias) {
+
+        Connection con = ConexionBD.coneccion;
+        String consulta = "SELECT id_Subdependencia as id, nombre_Subdependencia as nombre FROM subdependencia ";
+        consulta += "WHERE id_Dependencia = ?";
+        ResultSet resultado = null;
+        ArrayList<ArrayList<itemCombo>> subdependencias;
+        subdependencias = new ArrayList<ArrayList<itemCombo>>();
+        ArrayList<itemCombo> fila;
+        
+        try {
+            
+            for(itemCombo dependencia: dependencias){
+                
+                PreparedStatement statement = con.prepareStatement(consulta);
+                statement.setInt(1, dependencia.getId());
+                resultado = statement.executeQuery();
+                fila = new ArrayList<itemCombo>();
+                
+                while(resultado.next()){
+                itemCombo item = new itemCombo(resultado.getInt("id"), resultado.getString("nombre"));
+                fila.add(item);
+                }
+                
+                subdependencias.add(fila);
+            }
+            
+
+        } catch (SQLException ex) {
+            System.out.println("ERROR AL CONSULTAR SUBDEPENDENCIA " + ex.getMessage());
+        }
+        
+        return subdependencias;
+    }
+
+  
+
+    /**
+     * El propósito del método es listar los empleados según nombre, código de
+     * dependencia y subdependencia (si es 0, entonces se listan en el todo
+     * según la categoría)
+     *
+     * @param dep id de la dependencia
+     * @param sub id de la subdependencia
+     * @param nombre nombre del empleado a buscar
+     * @return ArrayList, lista de objetos Empleado
+     */
+    public List<Empleado> buscarEmpleados(int dep, int sub, String nombre,
+            int empleadoExcepcion) {
+
+        Connection con = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        List<Empleado> listado = new ArrayList<>();
+
+        //CONSULTAS
+        String sql = "";
+
+        try {
+
+            con = ConexionBD.coneccion;
+
+            if (nombre.isEmpty()) {
+
+                nombre = "'%'";
+
+            } else {
+                nombre = "'%" + nombre + "%'";
+            }
+
+            if (dep == 0) {
+
+                if (sub == 0) {
+
+                    sql = "SELECT e.nombre,e.correo,codigo_Empleado, e.sexo , "
+                            + "d.nombre_Dependencia , s.nombre_Subdependencia, \n"
+                            + "e.dependencia, e.subdependencia\n"
+                            + "from empleado e, dependencia d, subdependencia s\n"
+                            + "where e.dependencia = d.id_Dependencia\n"
+                            + "and e.subdependencia = s.id_Subdependencia\n"
+                            + "and e.nombre like " + nombre + "\n"
+                            + "and e.codigo_Empleado != " + empleadoExcepcion + "\n"
+                            + "order by e.codigo_Empleado ;";
+
+                }
+
+            } else if (sub == 0) {
+
+                sql = "SELECT e.nombre,e.correo,codigo_Empleado, e.sexo , "
+                        + "d.nombre_Dependencia , s.nombre_Subdependencia, \n"
+                        + "e.dependencia, e.subdependencia\n"
+                        + "from empleado e, dependencia d, subdependencia s\n"
+                        + "where e.dependencia = d.id_Dependencia\n"
+                        + "and e.dependencia = " + dep + "\n"
+                        + "and e.subdependencia = s.id_Subdependencia\n"
+                        + "and e.nombre like " + nombre + "\n"
+                        + "and e.codigo_Empleado != " + empleadoExcepcion + "\n"
+                        + "order by e.codigo_Empleado ;";
+
+            } else {
+
+                sql = "SELECT e.nombre,e.correo,codigo_Empleado, e.sexo , "
+                        + "d.nombre_Dependencia , s.nombre_Subdependencia, \n"
+                        + "e.dependencia, e.subdependencia\n"
+                        + "from empleado e, dependencia d, subdependencia s\n"
+                        + "where e.dependencia = d.id_Dependencia\n"
+                        + "and e.dependencia = " + dep + "\n"
+                        + "and e.subdependencia = s.id_Subdependencia\n"
+                        + "and e.subdependencia = " + sub + "\n"
+                        + "and e.nombre like " + nombre + "\n"
+                        + "and e.codigo_Empleado != " + empleadoExcepcion + "\n"
+                        + "order by e.codigo_Empleado ;";
+
+            }
+
+            pstm = con.prepareStatement(sql);
+            rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                Empleado empleado = new Empleado();
+                empleado.setCodigo(Integer.parseInt(rs.getString("codigo_Empleado")));
+                empleado.setNombre(rs.getString("nombre"));
+                empleado.setCorreo(rs.getString("correo"));
+                empleado.setSexo(rs.getString("sexo"));
+                empleado.setDependencia(rs.getInt("dependencia"));
+                empleado.setSubDependencia(rs.getInt("subdependencia"));
+                empleado.setNombreDependencia(rs.getString("nombre_Dependencia"));
+                empleado.setNombreSubdependencia(rs.getString("nombre_Subdependencia"));
+                listado.add(empleado);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Código : "
+                    + ex.getErrorCode() + "\nError :" + ex.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstm != null) {
+                    pstm.close();
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Código : "
+                        + ex.getErrorCode() + "\nError :" + ex.getMessage());
+            }
+        }
+        return listado;
+    }
+    
 }

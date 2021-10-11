@@ -11,6 +11,8 @@ import java.net.Socket;
 import Paquetes.Publicaciones;
 import Paquetes.Paquete;
 import Paquetes.ResIniciarSesion;
+import Paquetes.RespuestaBusqueda;
+import Vista.Empleado;
 
 public class Conexion extends Thread {
 
@@ -112,13 +114,20 @@ public class Conexion extends Thread {
                     case Paquete.publicaciones: {
                         controlador.cargarPublicaciones((Publicaciones) paquete);
                     } break;
-
+                    
+                    case Paquete.respuestaBusqueda: {
+                        
+                        RespuestaBusqueda resBusqueda;
+                        resBusqueda = (RespuestaBusqueda) paquete;
+                        controlador.cargarEmpleados(resBusqueda.getEmpleados());
+                        
+                    } break;
                 }
             }
         } catch (IOException ex) {
-            System.out.println("Erro al escuchar al servidor: " + ex.getMessage());
+            System.out.println("Error al escuchar al servidor: " + ex.getMessage());
         } catch (ClassNotFoundException ex) {
-            System.out.println("Erro al escuchar al servidor: " + ex.getMessage());
+            System.out.println("Error al escuchar al servidor: " + ex.getMessage());
         }
 
     }
