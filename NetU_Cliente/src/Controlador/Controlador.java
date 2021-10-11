@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Modelo.Conexion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Paquetes.Paquete;
@@ -11,23 +12,31 @@ import Paquetes.Perfil;
 import Paquetes.PetIniciarSesion;
 import Paquetes.ResIniciarSesion;
 import Paquetes.CambiarDescripcion;
+import Paquetes.Chat;
 import Paquetes.EliminarPublicacion;
+import Paquetes.EnvioMensaje;
 import Paquetes.Publicacion;
 import Paquetes.Publicaciones;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import vista.ChatGUI;
 import vista.LoginGUI;
 import vista.PrincipalGUI;
 
-public class Controlador implements ActionListener, KeyListener {
+public class Controlador implements ActionListener, KeyListener, WindowListener {
 
     private Conexion conexion;
     private LoginGUI login;
     private PrincipalGUI principalGUI;
+    private ChatGUI chatGui;
+    private int chatKeyPressed;
+    private String nombreChat;
 
     /**
      * Constructor. Se inicializa la conexión y se empieza a escuchar (loop) a
@@ -52,7 +61,6 @@ public class Controlador implements ActionListener, KeyListener {
      * cuando se haya hecho login.
      */
     public void iniciarPrincipalGUI(ResIniciarSesion resIniciarSesion) { 
-        JOptionPane.showMessageDialog(null, "Hola");
         login.cerrar();
         principalGUI = new PrincipalGUI();
         asignarEscuchasVentanaPrincipal();
@@ -71,6 +79,7 @@ public class Controlador implements ActionListener, KeyListener {
         principalGUI.asignarEscuchaAreaDescripcion(this);
         principalGUI.asignarEscuchaBtnModificarDescripcion(this);
         principalGUI.asignarEscuchaBtnEliminarPublicacion(this);
+        principalGUI.asignarEscuchaBtnEnviarMensaje(this);
     }
 
     @Override
@@ -110,7 +119,6 @@ public class Controlador implements ActionListener, KeyListener {
                     login.desplegarMensaje(1, "Error al iniciar sesión", mensaje);
 
                 }
-
             }
 
         }
@@ -172,7 +180,6 @@ public class Controlador implements ActionListener, KeyListener {
                     }
 
                 }
-
             }
 
             if (e.getSource().equals(principalGUI.getBtnEliminarPublicacion())) {
@@ -207,9 +214,35 @@ public class Controlador implements ActionListener, KeyListener {
                     principalGUI.desplegarMensajeDialogo(1, "ERROR AL ELIMINAR PUBLICACION(ES)",
                              "Usted no tiene ninguna publicación.\n ¡Comienza publicando una!");
                 }
-
+            }
+            
+            if(e.getSource().equals(principalGUI.getBtnEnviarMensaje())){
+                String codigoInput = JOptionPane.showInputDialog("Escriba el código del empleado");       
+                if(chatGui != null){
+                    JOptionPane.showMessageDialog(null,"Cierra el chat con "
+                            .concat(chatGui.getTitle()).concat(" para abrir otro")); 
+                    return;
+                }
+                try {
+                    nombreChat = "NOMBRE DEL EMPLEADO";
+                    int codigoEmpleado = Integer.parseInt(codigoInput);
+                    Chat peticionChat = new Chat();
+                    peticionChat.setCodigoDestinatario(codigoEmpleado);
+                    peticionChat.setTipo(Paquete.chat);
+                    conexion.enviarPaquete(peticionChat);
+                }catch(NumberFormatException exception){
+                    JOptionPane.showMessageDialog(null,"Debe ingresar un código"
+                            .concat(" válido"));
+                }
+                
             }
 
+        }
+        
+        if(chatGui != null){
+            if(e.getSource().equals(chatGui.getBtnEnviar())){
+                enviarMensaje();
+            }
         }
 
     }
@@ -239,7 +272,34 @@ public class Controlador implements ActionListener, KeyListener {
         principalGUI.cargarPublicaciones(publicaciones);
 
     }
+    
+    public void enviarMensaje(){
+        String mensaje =  chatGui.obtenerMensaje();
+        if(mensaje.isEmpty()){
+            principalGUI.desplegarMensajeDialogo(1,"Mensaje vacío",
+                    "Asegúrese de escribir algo antes de enviar un mensaje");
+            return;
+        }
+        EnvioMensaje paqueteMensaje = new EnvioMensaje(mensaje,
+        chatGui.getCodigoDestinatario());
+        paqueteMensaje.setTipo(Paquete.envioMensaje);
+        conexion.enviarPaquete(paqueteMensaje);
+        chatGui.limpiarTxtMensaje();
+        System.out.println("Mensaje enviado");
+    }
 
+    public void construirChat(Chat chat){
+        if(chatGui == null){
+            chatGui = new ChatGUI(nombreChat, 
+                    chat.getMensajes(),chat.getCodigoDestinatario());
+            chatGui.setKeyListener(this);
+            chatGui.setWindowsListener(this);
+            chatGui.setActionListener(this);
+            return;
+        }
+        
+        chatGui.cargarMensages(chat.getMensajes());
+    }
     /**
      * El método permite desplegar un mensaje por medio de JOptionPane
      *
@@ -290,13 +350,60 @@ public class Controlador implements ActionListener, KeyListener {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     principalGUI.modificarDescripcion(2);
                 }
-
+                return;
             }
         }
+        
+       if(chatGui != null){
+            if(chatKeyPressed == KeyEvent.VK_SHIFT && 
+                    e.getKeyCode()==KeyEvent.VK_ENTER){
+                System.out.println("Enter");
+                chatGui.saltoLineaMensaje();
+            } else {
+                if(e.getKeyCode()==KeyEvent.VK_ENTER){
+                    enviarMensaje();
+                }
+            }           
+            chatKeyPressed = e.getKeyCode();
+            System.out.println("Tecla "+e.getKeyCode());           
+       }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        Paquete cerrarChat = new Paquete();
+        cerrarChat.setTipo(Paquete.cerrarChat);
+        conexion.enviarPaquete(cerrarChat);
+        chatGui.dispose();
+        chatGui = null;
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
     }
 
 }

@@ -6,7 +6,9 @@ package Controlador;
 
 import Modelo.GestorBDEmpleado;
 import Paquetes.CambiarDescripcion;
+import Paquetes.Chat;
 import Paquetes.EliminarPublicacion;
+import Paquetes.EnvioMensaje;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -44,6 +46,23 @@ public class Servidor extends Thread {
 
     }
 
+    public void enviarChat(HiloEmpleado empleado, int codReceptor){
+        Chat chat = new Chat();
+        chat.setCodigoDestinatario(codReceptor);
+        chat.setTipo(Paquete.chat);
+        chat = gestorEmpleado.contruirChat(chat,empleado.codigo);
+        empleado.enviarPaquete(chat);
+    }
+    
+    public HiloEmpleado buscarEmpleado(int codEmpleado){
+        for(HiloEmpleado empleado : empleadosConectados){
+            if(empleado.codigo == codEmpleado){
+                return empleado;
+            }
+        }
+        return null;
+    }
+    
     @Override
     public void run() {
         while (true) {
@@ -53,7 +72,6 @@ public class Servidor extends Thread {
                
                HiloEmpleado empleado = new HiloEmpleado(sockEmpleado, gestorEmpleado);
                empleadosConectados.add(empleado);
-               System.out.println(empleadosConectados.size());
                empleado.start();
             } catch (IOException ex) {
                 System.out.println("Erro al aceptar un empleado: " + ex.getMessage());
@@ -64,7 +82,7 @@ public class Servidor extends Thread {
 
     class HiloEmpleado extends Thread {
 
-        private int codigo;
+        public int codigo;
         private GestorBDEmpleado gestor;
         private Socket socket;
         private ObjectInputStream entrada;
@@ -179,12 +197,39 @@ public class Servidor extends Thread {
                         publicaciones.setTipo(Paquete.publicaciones);
                         enviarPaquete(publicaciones);
                         
-                    }
+                    }else{
+                    
+                    if(paquete.getTipo() == Paquete.chat){
+                        Chat peticionChat = (Chat) paquete;
+                        peticionChat = gestorEmpleado
+                                .contruirChat(peticionChat, codigo);
+                        enviarPaquete(peticionChat);
+                    }else{
+                    
+                    if(paquete.getTipo() == Paquete.envioMensaje){
+                        EnvioMensaje mensaje = (EnvioMensaje) paquete;
+                        gestorEmpleado.crearMensaje(mensaje, codigo);
+                        Chat chatActual = new Chat();
+                        chatActual.setCodigoDestinatario(mensaje.getCodigoDestinatario());
+                        chatActual.setTipo(Paquete.chat);
+                        enviarPaquete(gestorEmpleado.contruirChat(chatActual, codigo));
+                        HiloEmpleado empDestinatario = 
+                            buscarEmpleado(mensaje.getCodigoDestinatario());
+                        if(empDestinatario != null && 
+                                gestorEmpleado.chatAbierto(mensaje.
+                                        getCodigoDestinatario(), codigo)){
+                                enviarChat(empDestinatario, codigo);
+                        }
                         
+                    }else{
+                    if(paquete.getTipo() == Paquete.cerrarChat){
+                        gestorEmpleado.cerrarChat(codigo);
+                    }
+                    }
+                    }
+                    }                     
                     }    
-
-                    }
-                        
+                    }                       
                     }
                 }
 

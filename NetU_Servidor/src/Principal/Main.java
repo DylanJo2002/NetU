@@ -8,6 +8,7 @@ package Principal;
 import Controlador.Controlador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -18,6 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
     
     public static void main(String[] args) {
+
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (ClassNotFoundException ex) {
@@ -30,7 +32,6 @@ public class Main {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         Controlador controlador = new Controlador();
-
     }
     
 }
