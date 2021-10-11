@@ -200,7 +200,6 @@ public class Servidor extends Thread {
                         enviarPaquete(publicaciones);
                         
                     }else{
-<<<<<<< HEAD
                         
                     if(paquete.getTipo() == Paquete.peticionBusqueda){
                         PeticionBusqueda petBusqueda;
@@ -218,9 +217,6 @@ public class Servidor extends Thread {
                         enviarPaquete(resBusqueda);
         
                     }
-                    }
-=======
-                    
                     if(paquete.getTipo() == Paquete.chat){
                         Chat peticionChat = (Chat) paquete;
                         peticionChat = gestorEmpleado
@@ -242,7 +238,6 @@ public class Servidor extends Thread {
                                         getCodigoDestinatario(), codigo)){
                                 enviarChat(empDestinatario, codigo);
                         }
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f
                         
                     }else{
                     if(paquete.getTipo() == Paquete.cerrarChat){
@@ -254,6 +249,7 @@ public class Servidor extends Thread {
                     }    
                     }                       
                     }
+            
                 }
 
             } catch (IOException | ClassNotFoundException ex) {

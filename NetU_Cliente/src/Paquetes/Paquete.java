@@ -14,14 +14,11 @@ public class Paquete implements Serializable {
     public static final int publicar = 4;
     public static final int publicaciones = 5;
     public static final int eliminarPublicacion = 6;
-<<<<<<< HEAD
     public static final int peticionBusqueda = 7;
     public static final int respuestaBusqueda = 8;
-=======
     public static final int envioMensaje = 19;
     public static final int chat = 18;
     public static final int cerrarChat = 20;
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f
     public static final int error = 10;
     
 

@@ -14,7 +14,7 @@ import Paquetes.Publicaciones;
 import Paquetes.Paquete;
 import Paquetes.ResIniciarSesion;
 import Paquetes.RespuestaBusqueda;
-import Vista.Empleado;
+
 
 public class Conexion extends Thread {
 
@@ -117,18 +117,16 @@ public class Conexion extends Thread {
                         controlador.cargarPublicaciones((Publicaciones) paquete);
                     } break;
                     
-<<<<<<< HEAD:NetU_Cliente/src/Controlador/Conexion.java
                     case Paquete.respuestaBusqueda: {
                         
                         RespuestaBusqueda resBusqueda;
                         resBusqueda = (RespuestaBusqueda) paquete;
                         controlador.cargarEmpleados(resBusqueda.getEmpleados());
-                        
-=======
+                    } break;    
                     case Paquete.chat: {
                         controlador.construirChat((Chat) paquete);
                         System.out.println("RECIBÍ CHAT");
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f:NetU_Cliente/src/Modelo/Conexion.java
+                        
                     } break;
                 }
             }

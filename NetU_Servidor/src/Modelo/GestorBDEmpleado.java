@@ -16,12 +16,9 @@ import Vista.itemCombo;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 import javax.swing.JOptionPane;
-=======
 import java.util.logging.Level;
 import java.util.logging.Logger;
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f
 
 public class GestorBDEmpleado {
 
@@ -354,7 +351,6 @@ public class GestorBDEmpleado {
         }
 
     }
-<<<<<<< HEAD
     
     
     /**
@@ -548,6 +544,4 @@ public class GestorBDEmpleado {
         return listado;
     }
     
-=======
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f
 }

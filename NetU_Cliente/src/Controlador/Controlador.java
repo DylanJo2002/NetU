@@ -14,11 +14,8 @@ import Paquetes.ResIniciarSesion;
 import Paquetes.CambiarDescripcion;
 import Paquetes.Chat;
 import Paquetes.EliminarPublicacion;
-<<<<<<< HEAD
 import Paquetes.PeticionBusqueda;
-=======
 import Paquetes.EnvioMensaje;
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f
 import Paquetes.Publicacion;
 import Paquetes.Publicaciones;
 import Vista.Empleado;
@@ -89,11 +86,8 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         principalGUI.asignarEscuchaAreaDescripcion(this);
         principalGUI.asignarEscuchaBtnModificarDescripcion(this);
         principalGUI.asignarEscuchaBtnEliminarPublicacion(this);
-<<<<<<< HEAD
         principalGUI.asignarEscuchaBtnBuscar(this);
-=======
         principalGUI.asignarEscuchaBtnEnviarMensaje(this);
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f
     }
 
     @Override
@@ -315,10 +309,10 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
 
     }
     
-<<<<<<< HEAD
+
     public void cargarEmpleados(List<Empleado> empleados){
         principalGUI.cargarEmpleados(empleados);
-=======
+    }
     public void enviarMensaje(){
         String mensaje =  chatGui.obtenerMensaje();
         if(mensaje.isEmpty()){
@@ -332,7 +326,6 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         conexion.enviarPaquete(paqueteMensaje);
         chatGui.limpiarTxtMensaje();
         System.out.println("Mensaje enviado");
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f
     }
 
     public void construirChat(Chat chat){
