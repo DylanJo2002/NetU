@@ -56,6 +56,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
     private ChatGUI chatGui;
     private int chatKeyPressed;
     private String nombreChat;
+    private PerfilUsuarios perfilUsuarios;
 
     /**
      * Constructor. Se inicializa la conexión y se empieza a escuchar (loop) a
@@ -66,8 +67,8 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         conexion = new Conexion(this);
         conexion.start();
         login = new LoginGUI(this,this);
-        abrirLogin();
-
+        abrirLogin();       
+        perfilUsuarios = new PerfilUsuarios();
     }
     
   //DANIEL
@@ -102,13 +103,10 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                 perfil.getNombreDependencia(), perfil.getNombreSubdependencia(),
                 perfil.getDescripcion(), perfil.getSexo(),perfil.getFoto());//DANIEL
 
-        principalGUI.cargarPublicaciones(resIniciarSesion.getPublicaciones());
-        
+        principalGUI.cargarPublicaciones(resIniciarSesion.getPublicaciones());        
         principalGUI.setDependencias(resIniciarSesion.getDependencias());
-        principalGUI.setSubdependencias(resIniciarSesion.getSubdependencias());
-        
-        principalGUI.llenarCbxDependencias();
-        
+        principalGUI.setSubdependencias(resIniciarSesion.getSubdependencias());        
+        principalGUI.llenarCbxDependencias();   
     }
 
     public void asignarEscuchasVentanaPrincipal() {
@@ -119,10 +117,20 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         principalGUI.asignarEscuchaBtnEnviarMensaje(this);
         principalGUI.escuchaBtnVerPerfil(this);//DANIEL
         principalGUI.escuchaBtnCambiarFoto(this);//DANIEL
+        perfilUsuarios.asignarEscuchaBtnRegresarPerfiles(this);//DANIEL
     }
+    
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        //DANIEL        
+        if (e.getSource().equals(perfilUsuarios.getBtnRegresarPerfiles())){
+            perfilUsuarios.dispose();
+        }  
+        //DANIEL
+           
         //Escucha del login
         if (login != null) {
 
@@ -290,7 +298,6 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
             }
             
             if (e.getSource().equals(principalGUI.getBtnVerPerfil())) {
-
                 consultarPerfil();
             }
 
@@ -374,30 +381,32 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
     }
     
   //DANIEL
-    public void consultarPerfil() {
-        /*String codigo = JOptionPane.showInputDialog(
-                "Ingresa Código de Empleado a Buscar", null);*/
-        String codigo = ""+principalGUI.getEmpleadoFromTable().getCodigo();
-        System.out.println("Codigo Empleado : " + codigo);
-        ConsultaPerfiles cp = new ConsultaPerfiles();
-        cp.setCodigo(codigo);
-        cp.setTipo(Paquete.consultaPerfil);
-        conexion.enviarPaquete(cp);
-    }
-
-    public void iniciarPerfiles(ConsultaPerfiles cp) {
-        PerfilUsuarios perfilUsuarios = new PerfilUsuarios();
-        asignarEscuchasVentanaPrincipal();
-        Perfil perfil = cp.getPerfil();
-        perfilUsuarios.cargarInformacion(perfil.getNombre(), perfil.getCorreo(),
-                perfil.getNombreDependencia(), perfil.getNombreSubdependencia(),
-                perfil.getDescripcion(), perfil.getSexo(), perfil.getFoto());
-        perfilUsuarios.cargarPublicaciones(cp.getPublicaciones());        
-        perfilUsuarios.setVisible(true);
-        perfilUsuarios.setLocationRelativeTo(null);
-
-    }
+    public void consultarPerfil() {        
+        try{
+            String codigo = ""+principalGUI.getEmpleadoFromTable().getCodigo();        
+            ConsultaPerfiles cp = new ConsultaPerfiles();
+            System.out.println("Codigo Empleado: " + codigo);
+            cp.setCodigo(codigo);
+            cp.setTipo(Paquete.consultaPerfil);
+            conexion.enviarPaquete(cp);
     
+        }catch(Exception e){
+            principalGUI.desplegarMensajeDialogo(1,"Sin Empleados",
+                    "Por favor busque un empleado y seleccionelo");
+        }
+    }
+
+    public void iniciarPerfiles(ConsultaPerfiles cp) {  
+            Perfil perfil = cp.getPerfil();
+            perfilUsuarios.cargarInformacion(perfil.getNombre(), perfil.getCorreo(),
+                    perfil.getNombreDependencia(), perfil.getNombreSubdependencia(),
+                    perfil.getDescripcion(), perfil.getSexo(), perfil.getFoto());
+            perfilUsuarios.cargarPublicaciones(cp.getPublicaciones());        
+            perfilUsuarios.setVisible(true);
+            perfilUsuarios.setLocationRelativeTo(null);
+
+    }
+       
     public void agregarFotoLocal() {
         JFileChooser j = new JFileChooser("src\\Imagenes Perfiles");
         FileNameExtensionFilter fil = new FileNameExtensionFilter("JPEG,JPG, "

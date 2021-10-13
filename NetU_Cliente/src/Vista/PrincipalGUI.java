@@ -98,7 +98,9 @@ public class PrincipalGUI extends javax.swing.JFrame {
             System.out.println("Metodo cargarInformacion-PrincipalGUI " + ex);
         }
     }
+    private void btnCambiarFotoActionPerformed(java.awt.event.ActionEvent evt) {                                               
 
+    }
     /**
      * El propósito del método es cargar la imagen del perfil según el sexo del
      * Empleado
@@ -702,6 +704,11 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel20.setText("NOTA:");
 
         btnVerPerfil.setText("Ver Perfil");
+        btnVerPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerPerfilActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelBuscadorLayout = new javax.swing.GroupLayout(panelBuscador);
         panelBuscador.setLayout(panelBuscadorLayout);
@@ -855,6 +862,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnVerPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPerfilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerPerfilActionPerformed
 
      /**
      * El propósito del método es limpiar y eliminar los checkBoxes en el array
@@ -1014,6 +1025,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
         btnEliminarPublicacion.addActionListener(al);
     }
 
+    
+    
     public void asignarEscuchaAreaDescripcion(KeyListener kl) {
         txtAreaDescripcion.addKeyListener(kl);
     }

@@ -8,6 +8,7 @@ package Vista;
 import Paquetes.Publicaciones;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import vista.PrincipalGUI;
 
@@ -270,10 +272,17 @@ public class PerfilUsuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        
-        dispose();
+                
     }//GEN-LAST:event_btnRegresarActionPerformed
 
+        
+    public void asignarEscuchaBtnRegresarPerfiles(ActionListener al){
+        btnRegresar.addActionListener(al);
+    }
+    
+    public JButton getBtnRegresarPerfiles(){
+        return btnRegresar;
+    }
     
     
    

@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyListener;
@@ -81,7 +83,15 @@ public class Administracion extends javax.swing.JFrame {
         tableModel.setEmpleados(empleados);
         tablaEmpleados.updateUI();
     }
-
+    
+    //DANIEL
+    @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(
+                ClassLoader.getSystemResource("Imagen/netU_icon.png"));
+        return retValue;
+    }
+    //DANIEL
     /**
      * @return El nombre que se escribió en la seccion CU(crear o modificar)
      */
@@ -630,6 +640,7 @@ public class Administracion extends javax.swing.JFrame {
         btnCerrarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setIconImage(getIconImage());
 
         lblNombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblNombre.setText("REGISTRO EMPLEADOS");

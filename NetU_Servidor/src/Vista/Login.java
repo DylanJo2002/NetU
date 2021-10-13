@@ -3,6 +3,8 @@
  */
 package Vista;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -42,6 +44,7 @@ public class Login extends javax.swing.JFrame {
         txtPasswordEmpleado = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setIconImage(getIconImage());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -181,6 +184,13 @@ public class Login extends javax.swing.JFrame {
      */
     public JButton getBtnLogin() {
         return btnIniciarSesion;
+    }
+    
+    @Override
+    public Image getIconImage(){
+        Image retValue = Toolkit.getDefaultToolkit().getImage(
+                ClassLoader.getSystemResource("Imagen/netU_icon.png"));
+        return retValue;
     }
     /**
      * @return El textField del codigo del Empleado para restringir el ingreso
