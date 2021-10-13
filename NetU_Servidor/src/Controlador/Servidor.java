@@ -7,6 +7,8 @@ package Controlador;
 import Modelo.GestorBDEmpleado;
 import Paquetes.CambiarDescripcion;
 import Paquetes.Chat;
+import Paquetes.CambiarFoto;
+import Paquetes.ConsultaPerfiles;
 import Paquetes.EliminarPublicacion;
 import Paquetes.EnvioMensaje;
 import java.io.IOException;
@@ -216,7 +218,9 @@ public class Servidor extends Thread {
                         resBusqueda.setTipo(Paquete.respuestaBusqueda);
                         enviarPaquete(resBusqueda);
         
-                    }
+                    }else{
+                        
+                    
                     if(paquete.getTipo() == Paquete.chat){
                         Chat peticionChat = (Chat) paquete;
                         peticionChat = gestorEmpleado
@@ -242,15 +246,28 @@ public class Servidor extends Thread {
                     }else{
                     if(paquete.getTipo() == Paquete.cerrarChat){
                         gestorEmpleado.cerrarChat(codigo);
+                    }                
+                     else {
+                        if (paquete.getTipo() == Paquete.consultaPerfil) {                        
+                            ConsultaPerfiles pk = (ConsultaPerfiles)paquete;                             
+                            ConsultaPerfiles regresarPaquete;
+                            regresarPaquete = gestor.consultaPerfiles(pk);                       
+                            regresarPaquete.setTipo(Paquete.consultaPerfil);                            
+                            enviarPaquete(regresarPaquete);   
+                        } 
+                     else {
+                        if (paquete.getTipo() == Paquete.cambiarFoto) {                        
+                            CambiarFoto cf = (CambiarFoto)paquete; 
+                            gestor.cambiarFotoBD(cf);  
+                        } 
+                     } //DANIEL
                     }
-                    }
-                    }
-                    }                     
-                    }    
-                    }                       
-                    }
-            
-                }
+                   }
+                  }
+                  }
+                 }  
+                    }}}}
+              
 
             } catch (IOException | ClassNotFoundException ex) {
                 gestorEmpleado.cambiarEstadoEmpleado(codigo, false);

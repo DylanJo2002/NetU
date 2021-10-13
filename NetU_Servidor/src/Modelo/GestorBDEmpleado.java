@@ -97,12 +97,13 @@ public class GestorBDEmpleado {
     public Perfil construirPerfil(Perfil perfil) {
 
         String consultaSQL = "SELECT nombre,sexo,correo,nombre_Dependencia,"
-                + "nombre_Subdependencia,descripcion "
-                + "FROM empleado,dependencia,subdependencia "
+                + "nombre_Subdependencia,descripcion,foto " //DANIEL
+                + "FROM empleado,dependencia,subdependencia,img_perfiles "//DANIEL
                 + "WHERE empleado.dependencia = dependencia.id_Dependencia "
                 + "AND empleado.subdependencia = subdependencia.id_Subdependencia "
+                + "AND empleado.codigo_Empleado = img_perfiles.codigo_Empleado "//DANIEL
                 + "AND empleado.codigo_Empleado = " + perfil.getCodigo();
-
+                
         ResultSet consultaRealizada = ejecutarQuery(consultaSQL);
 
         try {
@@ -113,6 +114,8 @@ public class GestorBDEmpleado {
                 perfil.setNombreDependencia(consultaRealizada.getString("nombre_Dependencia"));
                 perfil.setNombreSubdependencia(consultaRealizada.getString("nombre_Subdependencia"));
                 perfil.setDescripcion(consultaRealizada.getString("descripcion"));
+                perfil.setFoto(consultaRealizada.getBytes("foto"));//DANIEL               
+                
             }
         } catch (SQLException ex) {
             System.out.println("ERROR AL OBTENER CONSULTA PARA CONSTRUIR"
@@ -383,8 +386,76 @@ public class GestorBDEmpleado {
 
         
         return dependencias;
+     }	
+	  
+    //DANIELL
+    
+    public ConsultaPerfiles consultaPerfiles(ConsultaPerfiles peticion) {
+
+        String mensaje = "";
+
+        ConsultaPerfiles respuesta = new ConsultaPerfiles();
+        //Consulta para verificar si existe el empleado
+        String cExiteEmpleado = "SELECT * FROM empleado WHERE codigo_Empleado = "
+                + peticion.getCodigo();
+        
+        
+
+        try {
+            ResultSet result;
+
+            result = ejecutarQuery(cExiteEmpleado);
+
+            if (!result.next()) {
+
+                mensaje = "No existe un empleado registrado con el código "
+                        + peticion.getCodigo() + "\n";
+
+            }
+            
+
+            if (mensaje.isEmpty()) {
+                respuesta.setPerfil(construirPerfil(new Perfil(Integer.parseInt
+                                                      (peticion.getCodigo()))));
+                respuesta.setPublicaciones(listarPublicaciones(
+                                        Integer.parseInt(peticion.getCodigo())));                
+                
+            } else {
+
+                respuesta.setExito(Paquete.error);                
+
+            }
+
+            respuesta.setMensaje(mensaje);
+
+        } catch (SQLException ex) {
+            System.out.println("Error al consultar el empleado " + ex.getMessage()
+                                                    + "Método Consultar Perfiles");
+        }
+
+        return respuesta;
 
     }
+    
+    public void cambiarFotoBD(CambiarFoto cf){
+        
+        try {
+            Connection con = ConexionBD.coneccion;
+            String update = "UPDATE img_perfiles SET foto = ? "
+                    + "WHERE codigo_Empleado = ?";            
+            PreparedStatement psFoto = con.prepareStatement(update);            
+            psFoto.setBytes(1, cf.getFoto());
+            psFoto.setInt(2, Integer.parseInt(cf.getCodigo()));           
+            psFoto.executeUpdate();            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }  
+    }
+    
+    
+    
+    //DANIEL
 
     /**
      * El propósito del método es consultar las subdependencias pertenecientes a

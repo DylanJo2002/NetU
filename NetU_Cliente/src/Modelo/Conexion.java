@@ -4,8 +4,10 @@
  */
 package Modelo;
 
+
 import Controlador.Controlador;
 import Paquetes.Chat;
+import Paquetes.ConsultaPerfiles;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -128,7 +130,13 @@ public class Conexion extends Thread {
                         System.out.println("RECIBÍ CHAT");
                         
                     } break;
-                }
+
+                  //DANIEL
+                    case Paquete.consultaPerfil: {                        
+                        controlador.iniciarPerfiles((ConsultaPerfiles)paquete);                        
+                    }
+                  //DANIEL
+               }
             }
         } catch (IOException ex) {
             System.out.println("Error al escuchar al servidor: " + ex.getMessage());

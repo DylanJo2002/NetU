@@ -20,7 +20,11 @@ public class Paquete implements Serializable {
     public static final int chat = 18;
     public static final int cerrarChat = 20;
     public static final int error = 10;
-    
+    //DANIEL
+    public static final int consultaPerfil = 9;
+    public static final int cambiarFoto = 11;
+    //DANIEL
+
 
     private int tipo;
     /**

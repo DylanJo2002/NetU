@@ -13,6 +13,8 @@ import Paquetes.PetIniciarSesion;
 import Paquetes.ResIniciarSesion;
 import Paquetes.CambiarDescripcion;
 import Paquetes.Chat;
+import Paquetes.CambiarFoto;
+import Paquetes.ConsultaPerfiles;
 import Paquetes.EliminarPublicacion;
 import Paquetes.PeticionBusqueda;
 import Paquetes.EnvioMensaje;
@@ -24,10 +26,25 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import Vista.PerfilUsuarios;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import vista.ChatGUI;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import vista.LoginGUI;
 import vista.PrincipalGUI;
 
@@ -53,6 +70,18 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
 
     }
     
+  //DANIEL
+     private int code;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+  //DANIEL
+    
     public void abrirLogin(){
         Thread hiloLogin = new Thread(login);
         hiloLogin.start();
@@ -68,10 +97,10 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         asignarEscuchasVentanaPrincipal();
         
         Perfil perfil = resIniciarSesion.getPerfil();
-
+        setCode(perfil.getCodigo());// DANIEL
         principalGUI.cargarInformacion(perfil.getNombre(), perfil.getCorreo(),
                 perfil.getNombreDependencia(), perfil.getNombreSubdependencia(),
-                perfil.getDescripcion(), perfil.getSexo());
+                perfil.getDescripcion(), perfil.getSexo(),perfil.getFoto());//DANIEL
 
         principalGUI.cargarPublicaciones(resIniciarSesion.getPublicaciones());
         
@@ -88,6 +117,8 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         principalGUI.asignarEscuchaBtnEliminarPublicacion(this);
         principalGUI.asignarEscuchaBtnBuscar(this);
         principalGUI.asignarEscuchaBtnEnviarMensaje(this);
+        principalGUI.escuchaBtnVerPerfil(this);//DANIEL
+        principalGUI.escuchaBtnCambiarFoto(this);//DANIEL
     }
 
     @Override
@@ -195,11 +226,11 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                 List<Integer> idPublicaciones;
                 idPublicaciones = principalGUI.obtenerPublicacionesSeleccionadas();
                 String usted = "";
-                if (principalGUI.getSexo().equals("Masculino")) {
+                /*if (principalGUI.getSexo().equals("Masculino")) {
                     usted = "seguro";
                 } else {
                     usted = "segura";
-                }
+                }*/
                 if (idPublicaciones != null) {
                     if (idPublicaciones.size() > 0) {
                         int respuesta = principalGUI.desplegarMensajeConfirmacion(
@@ -257,6 +288,15 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                 
                 conexion.enviarPaquete(petBusqueda);
             }
+            
+            if (e.getSource().equals(principalGUI.getBtnVerPerfil())) {
+
+                consultarPerfil();
+            }
+
+            if (e.getSource().equals(principalGUI.getBtnCambiarFoto())) {
+                agregarFotoLocal();
+            }          
 
         }
         
@@ -265,6 +305,12 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                 enviarMensaje();
             }
         }
+     //DANIEL
+
+        
+     
+     //DANIEL
+     
 
     }
 
@@ -308,7 +354,6 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         principalGUI.cargarPublicaciones(publicaciones);
 
     }
-    
 
     public void cargarEmpleados(List<Empleado> empleados){
         principalGUI.cargarEmpleados(empleados);
@@ -327,6 +372,67 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         chatGui.limpiarTxtMensaje();
         System.out.println("Mensaje enviado");
     }
+    
+  //DANIEL
+    public void consultarPerfil() {
+        String codigo = JOptionPane.showInputDialog(
+                "Ingresa Código de Empleado a Buscar", null);
+        ConsultaPerfiles cp = new ConsultaPerfiles();
+        cp.setCodigo(codigo);
+        cp.setTipo(Paquete.consultaPerfil);
+        conexion.enviarPaquete(cp);
+    }
+
+    public void iniciarPerfiles(ConsultaPerfiles cp) {
+        PerfilUsuarios perfilUsuarios = new PerfilUsuarios();
+        asignarEscuchasVentanaPrincipal();
+        Perfil perfil = cp.getPerfil();
+        perfilUsuarios.cargarInformacion(perfil.getNombre(), perfil.getCorreo(),
+                perfil.getNombreDependencia(), perfil.getNombreSubdependencia(),
+                perfil.getDescripcion(), perfil.getSexo(), perfil.getFoto());
+        perfilUsuarios.cargarPublicaciones(cp.getPublicaciones());        
+        perfilUsuarios.setVisible(true);
+        perfilUsuarios.setLocationRelativeTo(null);
+
+    }
+    
+    public void agregarFotoLocal() {
+        JFileChooser j = new JFileChooser("src\\Imagenes Perfiles");
+        FileNameExtensionFilter fil = new FileNameExtensionFilter("JPEG,JPG, "
+                + "PNG & GIF", "jpg", "png", "gif", "jpeg");
+        j.setFileFilter(fil);
+
+        int s = j.showOpenDialog(principalGUI);
+        if (s == JFileChooser.APPROVE_OPTION) {
+            InputStream input = null;
+            try {
+                File ruta = new File(j.getSelectedFile().getAbsolutePath());
+                byte[] icono = new byte[(int) ruta.length()];
+                input = new FileInputStream(ruta);
+                input.read(icono);
+                byte[] bi = icono;
+                BufferedImage image = null;
+                InputStream in = new ByteArrayInputStream(bi);
+                image = ImageIO.read(in);
+                ImageIcon imgi = new ImageIcon(image.getScaledInstance(150,150,0));
+                principalGUI.setImagenPerfil(imgi);
+
+                //Actualizar Foto en Servidor                                                 
+                CambiarFoto cf = new CambiarFoto();
+                cf.setCodigo(""+getCode());
+                cf.setTipo(Paquete.cambiarFoto);
+                cf.setFoto(bi);
+                conexion.enviarPaquete(cf);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, "Ingresa un archivo correcto");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Ingresa un archivo correcto");
+            }
+
+        }
+    }
+    
+  //DANIEL
 
     public void construirChat(Chat chat){
         if(chatGui == null){

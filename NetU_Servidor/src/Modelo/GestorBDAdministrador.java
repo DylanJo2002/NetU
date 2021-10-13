@@ -19,6 +19,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
 import Vista.Empleado;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GestorBDAdministrador {
 
@@ -109,6 +116,8 @@ public class GestorBDAdministrador {
             pstm.setString(2, password);
             pstm.setInt(3, 0);
             pstm.executeUpdate();
+            
+            agregarFotoPerfil(empleado.getCodigo(), empleado.getSexo());//DANIEL
 
             JOptionPane.showMessageDialog(null, "EMPLEADO REGISTRADO CON EXITO\n"
                     + "CODIGO: " + empleado.getCodigo() + "\nCONTRASEÑA: " + password);
@@ -290,7 +299,7 @@ public class GestorBDAdministrador {
             pstm.setString(2, password);
 
             pstm.executeUpdate();
-
+            agregarFotoPerfil(empleado.getCodigo(), empleado.getSexo());//DANIEL
             JOptionPane.showMessageDialog(null, "EMPLEADO ADMINISTRADOR REGISTRADO CON EXITO\n"
                     + "CODIGO: " + empleado.getCodigo() + "\nCONTRASEÑA: " + password);
 
@@ -588,5 +597,51 @@ public class GestorBDAdministrador {
             System.out.println("ERROR " + ex.getMessage());
         }
     }
+    
+    //DANIEL 
+    
+    public void agregarFotoPerfil(int codigo, String sexo){
+        Connection con = ConexionBD.coneccion;
+        String sqlFoto = "INSERT INTO img_perfiles (foto,codigo_Empleado)\n" +
+              "VALUES (?,?);";
+            try {                
+                PreparedStatement psFoto = con.prepareStatement(sqlFoto);
+                if(sexo.equals("Masculino")){ 
+                    psFoto.setBytes(1,getFotoPerfilLocal("src/Imagen/perfil_hombre_icon.png"));
+                    psFoto.setInt(2, codigo); 
+                    psFoto.executeUpdate();
+                }else if(sexo.equals("Femenino")){              
+                    psFoto.setBytes(1,getFotoPerfilLocal("src/Imagen/perfil_mujer_icon.jpg"));
+                    psFoto.setInt(2, codigo);    
+                    psFoto.executeUpdate();
+                }
+            } catch (SQLException ex) {
+                System.out.println("AgregarFotoPerfil " + ex);
+            }
+    }
+    
+    
+    public byte[] getFotoPerfilLocal(String route){
+        InputStream input = null;
+        byte[] bi = null;
+        try {            
+            System.out.println(route);
+            File ruta = new File(route);
+            byte[] icono = new byte[(int) ruta.length()];
+            input = new FileInputStream(ruta);
+            input.read(icono);
+            bi = icono;
+            return bi;
+        } catch (FileNotFoundException ex) {
+            System.out.println("Método getFotoPerfilLocal " + ex);
+        } catch (IOException ex) {
+            System.out.println("Método getFotoPerfilLocal " + ex);
+        }
+        
+        return bi;
+    }
+    
+    
+    //DANIEL
 
 }

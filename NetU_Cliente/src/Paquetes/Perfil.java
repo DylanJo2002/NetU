@@ -15,6 +15,18 @@ public class Perfil extends Paquete {
     private String nombreSubdependencia;
     private String descripcion;
     //FALTA EL MÓDULO DE PUBLICACIONES. ¡ESPERA!
+    
+  //DANIEL
+    private byte[] foto;
+    
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
+  //DANIEL
 
     public Perfil(int codigo) {
         this.codigo = codigo;

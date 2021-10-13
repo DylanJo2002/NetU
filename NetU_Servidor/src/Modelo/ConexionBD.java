@@ -15,6 +15,7 @@ public class ConexionBD {
     static final String user = "root";
     static final String password = "MySQL2021";
     static final String url = "jdbc:mysql://localhost:3306/sistemanetu?serverTimezone=UTC";
+
     /**
      * Permite crear el objeto Connection hacia la BD.
      */
