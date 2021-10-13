@@ -375,8 +375,10 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
     
   //DANIEL
     public void consultarPerfil() {
-        String codigo = JOptionPane.showInputDialog(
-                "Ingresa Código de Empleado a Buscar", null);
+        /*String codigo = JOptionPane.showInputDialog(
+                "Ingresa Código de Empleado a Buscar", null);*/
+        String codigo = ""+principalGUI.getEmpleadoFromTable().getCodigo();
+        System.out.println("Codigo Empleado : " + codigo);
         ConsultaPerfiles cp = new ConsultaPerfiles();
         cp.setCodigo(codigo);
         cp.setTipo(Paquete.consultaPerfil);

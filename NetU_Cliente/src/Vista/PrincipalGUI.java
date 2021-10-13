@@ -238,10 +238,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
 
             }
         };
-        btnVerPerfil = new javax.swing.JButton();
         btnEnviarMensaje = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
+        btnVerPerfil = new javax.swing.JButton();
         panelNotificaciones = new javax.swing.JPanel(){
             @Override
             public void paint(Graphics g) {
@@ -327,6 +327,11 @@ public class PrincipalGUI extends javax.swing.JFrame {
         pane_lbl_Informacion.add(lblInformacion);
 
         btnCambiarFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconfinder-cameravideophotorecordingdevicevlog-3993861_112653.png"))); // NOI18N
+        btnCambiarFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarFotoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel_Info_PerfilLayout = new javax.swing.GroupLayout(panel_Info_Perfil);
         panel_Info_Perfil.setLayout(panel_Info_PerfilLayout);
@@ -337,7 +342,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_Info_PerfilLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                         .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnCambiarFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnModificarDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -626,6 +631,11 @@ public class PrincipalGUI extends javax.swing.JFrame {
         cbxSubdependecia.setModel(new javax.swing.DefaultComboBoxModel<>(new itemCombo[] {new itemCombo(0, "TODAS") }));
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         jLabel17.setText("Puedes iniciar la búsqueda sin un nombre");
 
@@ -683,8 +693,6 @@ public class PrincipalGUI extends javax.swing.JFrame {
         tablaBusqueda.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrollTable.setViewportView(tablaBusqueda);
 
-        btnVerPerfil.setText("Ver Perfil");
-
         btnEnviarMensaje.setText("Enviar mensaje");
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -692,6 +700,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel20.setText("NOTA:");
+
+        btnVerPerfil.setText("Ver Perfil");
 
         javax.swing.GroupLayout panelBuscadorLayout = new javax.swing.GroupLayout(panelBuscador);
         panelBuscador.setLayout(panelBuscadorLayout);
@@ -709,16 +719,17 @@ public class PrincipalGUI extends javax.swing.JFrame {
                             .addComponent(panelBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(scrollTable)))
                     .addGroup(panelBuscadorLayout.createSequentialGroup()
-                        .addGap(513, 513, 513)
-                        .addComponent(btnVerPerfil)
-                        .addGap(253, 253, 253)
-                        .addComponent(btnEnviarMensaje))
-                    .addGroup(panelBuscadorLayout.createSequentialGroup()
                         .addGap(487, 487, 487)
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel19)))
-                .addContainerGap(973, Short.MAX_VALUE))
+                        .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelBuscadorLayout.createSequentialGroup()
+                                .addComponent(btnVerPerfil)
+                                .addGap(281, 281, 281)
+                                .addComponent(btnEnviarMensaje))
+                            .addGroup(panelBuscadorLayout.createSequentialGroup()
+                                .addComponent(jLabel20)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel19)))))
+                .addContainerGap(968, Short.MAX_VALUE))
         );
         panelBuscadorLayout.setVerticalGroup(
             panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -734,12 +745,12 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVerPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnVerPerfil))
                 .addGap(18, 18, 18)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(jLabel20))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(363, Short.MAX_VALUE))
         );
 
         Ventana.addTab("Buscar empleados", new javax.swing.ImageIcon(getClass().getResource("/imagenes/buscar_icon.png")), panelBuscador); // NOI18N
@@ -840,6 +851,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_cbxDependeciaActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
      /**
      * El propósito del método es limpiar y eliminar los checkBoxes en el array
@@ -1132,7 +1147,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     public Empleado getEmpleadoFromTable() {
 
         Empleado empleado = tableModel.getEmpleadoAt(tablaBusqueda.getSelectedRow());
-
+        
         return empleado;
     }
     
