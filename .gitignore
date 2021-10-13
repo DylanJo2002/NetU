@@ -1,4 +1,8 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 4ebfb116a18064ee576fe1ffde7efeaf976beb9f
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
