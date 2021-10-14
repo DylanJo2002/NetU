@@ -9,10 +9,19 @@ package Paquetes;
  *
  * @author danie
  */
-public class ConsultaNotificacion {
+public class ConsultaNotificacion extends Paquete{
     private int codEmpRecibe;
     private int estadoMensaje;
     private String nomEmpEnvia;
+    private Notificaciones notificaciones;
+
+    public Notificaciones getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(Notificaciones notificaciones) {
+        this.notificaciones = notificaciones;
+    }
     
     public ConsultaNotificacion(){
         

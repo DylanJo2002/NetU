@@ -8,9 +8,11 @@ import Modelo.GestorBDEmpleado;
 import Paquetes.CambiarDescripcion;
 import Paquetes.Chat;
 import Paquetes.CambiarFoto;
+import Paquetes.ConsultaNotificacion;
 import Paquetes.ConsultaPerfiles;
 import Paquetes.EliminarPublicacion;
 import Paquetes.EnvioMensaje;
+import Paquetes.Notificaciones;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -57,6 +59,18 @@ public class Servidor extends Thread {
         chat = gestorEmpleado.contruirChat(chat,empleado.codigo);
         empleado.enviarPaquete(chat);
     }
+    
+    public void enviarNotificacion(HiloEmpleado empleado, int codReceptor){
+        ConsultaNotificacion consNotificacion = new ConsultaNotificacion();
+        consNotificacion.setCodEmpRecibe(empleado.codigo);
+        System.out.println("DESTINA "+empleado.codigo);
+        consNotificacion.setNotificaciones(gestorEmpleado.consultaNotificacion(consNotificacion));                        
+        consNotificacion.setTipo(Paquete.consultaNotificacion);
+        System.out.println("-----------------TIPO PAQUETE----------------------------------"
+                + consNotificacion.getTipo());
+        empleado.enviarPaquete(consNotificacion);
+    }
+    
     
     public HiloEmpleado buscarEmpleado(int codEmpleado){
         for(HiloEmpleado empleado : empleadosConectados){
@@ -235,14 +249,17 @@ public class Servidor extends Thread {
                         chatActual.setCodigoDestinatario(mensaje.getCodigoDestinatario());
                         chatActual.setTipo(Paquete.chat);
                         enviarPaquete(gestorEmpleado.contruirChat(chatActual, codigo));
+                        gestorEmpleado.cargarNotificaciones(chatActual.getCodigoDestinatario(), codigo);
                         HiloEmpleado empDestinatario = 
                             buscarEmpleado(mensaje.getCodigoDestinatario());
                         if(empDestinatario != null && 
                                 gestorEmpleado.chatAbierto(mensaje.
                                         getCodigoDestinatario(), codigo)){
-                                enviarChat(empDestinatario, codigo);
-                        }
-                        
+                                enviarChat(empDestinatario, codigo); 
+                                
+                                
+                        } 
+                        enviarNotificacion(empDestinatario, mensaje.getCodigoDestinatario());
                     }else{
                     if(paquete.getTipo() == Paquete.cerrarChat){
                         gestorEmpleado.cerrarChat(codigo);
@@ -259,8 +276,21 @@ public class Servidor extends Thread {
                         if (paquete.getTipo() == Paquete.cambiarFoto) {                        
                             CambiarFoto cf = (CambiarFoto)paquete; 
                             gestor.cambiarFotoBD(cf);  
+                        }
+                        //DANIEL
+                        else {
+                            if (paquete.getTipo() == Paquete.consultaNotificacion) {                        
+                                ConsultaNotificacion consNotificacion = (ConsultaNotificacion)paquete;
+                                consNotificacion.setNotificaciones(gestor.consultaNotificacion(consNotificacion));
+                                enviarPaquete(consNotificacion); 
+                            }
                         } 
-                     } //DANIEL
+                        //DANIEL
+                     } 
+
+
+
+
                     }
                    }
                   }

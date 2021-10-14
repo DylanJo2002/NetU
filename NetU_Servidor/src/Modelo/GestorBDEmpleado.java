@@ -252,6 +252,7 @@ public class GestorBDEmpleado {
         return publicaciones;
     }
 
+    
     public Chat contruirChat(Chat chat, int codigoEmpleado) {
         String conjunto = "IN ("+codigoEmpleado+","+chat.getCodigoDestinatario()+")";
         String consultarChat = "SELECT * FROM mensaje WHERE codigo_Empleado_1 "
@@ -267,6 +268,11 @@ public class GestorBDEmpleado {
         String existeChat = "SELECT * FROM chat WHERE codigo_Empleado_1 "
                 +conjunto+" OR codigo_Empleado_2 "+conjunto;
         
+        String actualizarEstadoNot = "UPDATE notificacionmensaje set visto = 1 WHERE "
+                + "codigo_Empleado_1 = "+chat.getCodigoDestinatario()+" AND codigo_Empleado_2"
+                + " = "+codigoEmpleado;
+        
+                        
         ResultSet resultChat = ejecutarQuery(consultarChat);
         try {
             ArrayList<Mensaje> mensajes= new ArrayList<Mensaje>();
@@ -287,6 +293,7 @@ public class GestorBDEmpleado {
             ResultSet consultaExisteChat = ejecutarQuery(existeChat);
             if(consultaExisteChat.next()){
                 ejecutarUpdate(actualizarEstado);
+                ejecutarUpdate(actualizarEstadoNot);
             }else{
                 ejecutarUpdate(crearChatEmisor);
                 ejecutarUpdate(crearChatReceptor);
@@ -307,17 +314,25 @@ public class GestorBDEmpleado {
         String insercion = "INSERT INTO mensaje VALUES("+codigoEmpleado
                 +","+mensaje.getCodigoDestinatario()+",'"+fecha+"','"+hora+"','"
                 +mensaje.getMensaje()+"');";
-        ejecutarUpdate(insercion);
+        ejecutarUpdate(insercion);        
+        
     }
+    
+    
+    
     
     public boolean chatAbierto(int codigoEmisor, int codigoReceptor){
         String consulta = "SELECT * FROM chat where codigo_Empleado_1 = "
                 +codigoEmisor+" AND codigo_Empleado_2 = "+codigoReceptor
                 +" AND abierto = 1";
         ResultSet resultado = ejecutarQuery(consulta);
+        
+        
         try {
             if(resultado.next()){
+                
                 return true;
+                
             }
         } catch (SQLException ex) {
             System.out.println("Error al verificar el chat abierto: "+ex.getMessage());
@@ -389,6 +404,79 @@ public class GestorBDEmpleado {
      }	
 	  
     //DANIELL
+    
+    public void cargarNotificaciones(int codigoRecibe,int codigoEnvia){
+        String consultaNotificacion = "Select * FROM notificacionmensaje "
+                + "where codigo_Empleado_1 = " + codigoEnvia + " and "
+                + "codigo_Empleado_2 = " + codigoRecibe;
+        String actualizarEstado = "UPDATE notificacionmensaje set visto = 0 WHERE "
+                + "codigo_Empleado_1 = "+codigoEnvia+" AND codigo_Empleado_2"
+                + " = "+codigoRecibe;
+        
+        String crearNotificacion = "insert into notificacionmensaje(codigo_Empleado_1"
+                + ",codigo_Empleado_2,visto) values ("+codigoEnvia+","
+                +codigoRecibe+","+0+")";
+        
+        ResultSet resultado = ejecutarQuery(consultaNotificacion);
+        try {
+            if(resultado.next()){
+                ejecutarUpdate(actualizarEstado);
+            }else{
+                ejecutarUpdate(crearNotificacion);                
+            } 
+        } catch (SQLException ex) {
+            System.out.println("Error al verificar el chat abierto: "+ex.getMessage());
+        }
+    }
+    
+    public Notificaciones consultaNotificacion(ConsultaNotificacion paquete){
+        
+        String consultaNotificaciones = "SELECT codigo_Empleado_1 as empleadoEnvia,"
+                + "codigo_Empleado_2 as empleadoRecibe,visto as estado,"
+                + "nombre as nombreEnvia FROM notificacionmensaje,empleado WHERE codigo_Empleado_2 = "
+                + paquete.getCodEmpRecibe() + " and codigo_Empleado_1 = empleado.codigo_Empleado";
+        
+        ResultSet consulta = ejecutarQuery(consultaNotificaciones);
+        Publicaciones publicaciones = new Publicaciones();
+        Publicacion publicacion;
+        
+        Notificaciones notificaciones = new Notificaciones();
+        ConsultaNotificacion notificacion;
+        
+        List<Publicacion> listaPublicaciones = new ArrayList();
+        
+        List<ConsultaNotificacion> listaNotificaciones = new ArrayList();
+        
+        try {
+            while (consulta.next()) {
+            /*
+                publicacion = new Publicacion();
+                publicacion.setId_Publicacion(consulta.getInt("id"));
+                publicacion.setFecha(Tiempo.convertirFecha(consulta.getString("fecha")));
+                publicacion.setHora(Tiempo.convertirHora(consulta.getString("hora")));
+                publicacion.setContenido(consulta.getString("contenido"));
+                listaPublicaciones.add(publicacion);
+            */    
+                notificacion = new ConsultaNotificacion();
+                notificacion.setCodEmpRecibe(consulta.getInt("empleadoRecibe"));
+                notificacion.setEstadoMensaje(consulta.getInt("estado"));
+                notificacion.setNomEmpEnvia(consulta.getString("nombreEnvia"));
+                listaNotificaciones.add(notificacion);
+                System.out.println(consulta.getInt("empleadoRecibe"));
+            }
+
+            //publicaciones.asignarPublicaciones(listaPublicaciones);
+            notificaciones.setNotifcaiones(listaNotificaciones);
+
+        } catch (SQLException ex) {
+            System.out.println("Error al listar publicaciones: " + ex.getMessage());
+        }
+        
+        
+        return notificaciones;
+    }
+    
+    
     
     public ConsultaPerfiles consultaPerfiles(ConsultaPerfiles peticion) {
 
