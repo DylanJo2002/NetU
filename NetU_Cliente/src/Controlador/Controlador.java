@@ -21,9 +21,6 @@ import Paquetes.EnvioMensaje;
 import Paquetes.Publicacion;
 import Paquetes.Publicaciones;
 import Vista.Empleado;
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import Vista.PerfilUsuarios;
@@ -392,7 +389,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
             peticionChat.setCodigoDestinatario(empleado.getCodigo());
             peticionChat.setTipo(Paquete.chat);
             conexion.enviarPaquete(peticionChat);
-        } catch (NumberFormatException exception) {
+        } catch (Exception exception) {
             principalGUI.desplegarMensajeDialogo(1,"Sin Empleados",
                     "Por favor busque un empleado y seleccionelo");
         }
