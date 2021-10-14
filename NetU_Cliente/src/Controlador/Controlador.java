@@ -14,6 +14,7 @@ import Paquetes.ResIniciarSesion;
 import Paquetes.CambiarDescripcion;
 import Paquetes.Chat;
 import Paquetes.CambiarFoto;
+import Paquetes.ConsultaNotificacion;
 import Paquetes.ConsultaPerfiles;
 import Paquetes.EliminarPublicacion;
 import Paquetes.PeticionBusqueda;
@@ -93,7 +94,6 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         login.cerrar();
         principalGUI = new PrincipalGUI();
         asignarEscuchasVentanaPrincipal();
-        
         Perfil perfil = resIniciarSesion.getPerfil();
         setCode(perfil.getCodigo());// DANIEL
         principalGUI.cargarInformacion(perfil.getNombre(), perfil.getCorreo(),
@@ -104,6 +104,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         principalGUI.setDependencias(resIniciarSesion.getDependencias());
         principalGUI.setSubdependencias(resIniciarSesion.getSubdependencias());        
         principalGUI.llenarCbxDependencias();   
+        consultaNotificacion();
     }
 
     public void asignarEscuchasVentanaPrincipal() {
@@ -266,7 +267,10 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                             .concat(chatGui.getTitle()).concat(" para abrir otro")); 
                     return;
                 }
+                
                 abrirChat();
+                consultaNotificacion();
+                
             }
             
             if(e.getSource().equals(principalGUI.getBtnBuscar())){
@@ -366,6 +370,17 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
     }
     
   //DANIEL
+    
+    public void consultaNotificacion(){
+        ConsultaNotificacion consulta = new ConsultaNotificacion();
+        consulta.setCodEmpRecibe(getCode());
+        consulta.setTipo(Paquete.consultaNotificacion);                
+        conexion.enviarPaquete(consulta);
+    }    
+    public void cargarNotificaciones(ConsultaNotificacion consulta){        
+        principalGUI.cargarNotificaciones(consulta.getNotificaciones());
+    }
+    
     public void consultarPerfil() {        
         try{
             String codigo = ""+principalGUI.getEmpleadoFromTable().getCodigo();        
@@ -389,6 +404,8 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
             peticionChat.setCodigoDestinatario(empleado.getCodigo());
             peticionChat.setTipo(Paquete.chat);
             conexion.enviarPaquete(peticionChat);
+            
+            
         } catch (Exception exception) {
             principalGUI.desplegarMensajeDialogo(1,"Sin Empleados",
                     "Por favor busque un empleado y seleccionelo");
@@ -445,6 +462,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
   //DANIEL
 
     public void construirChat(Chat chat){
+        
         if(chatGui == null){
             chatGui = new ChatGUI(nombreChat, 
                     chat.getMensajes(),chat.getCodigoDestinatario());
@@ -455,6 +473,8 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         }
         
         chatGui.cargarMensages(chat.getMensajes());
+        
+        
     }
     /**
      * El método permite desplegar un mensaje por medio de JOptionPane

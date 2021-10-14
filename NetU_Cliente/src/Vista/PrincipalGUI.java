@@ -3,11 +3,14 @@
  */
 package vista;
 
+import Paquetes.ConsultaNotificacion;
+import Paquetes.Notificaciones;
 import Paquetes.Publicaciones;
 import Vista.Empleado;
 import Vista.Publicacion;
 import Vista.TMEmpleado;
 import Vista.itemCombo;
+import Vista.Notificacion;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -257,9 +260,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
             }
         };
         jLabel10 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtAreaNotificaciones = new javax.swing.JTextArea();
         jLabel11 = new javax.swing.JLabel();
+        panelContenedorNotificaciones = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -696,6 +698,11 @@ public class PrincipalGUI extends javax.swing.JFrame {
         scrollTable.setViewportView(tablaBusqueda);
 
         btnEnviarMensaje.setText("Enviar mensaje");
+        btnEnviarMensaje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarMensajeActionPerformed(evt);
+            }
+        });
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel19.setText("Antes de dar click en cualquier boton, seleccionar un Empleado de la tabla");
@@ -729,8 +736,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
                         .addGap(487, 487, 487)
                         .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelBuscadorLayout.createSequentialGroup()
-                                .addComponent(btnVerPerfil)
-                                .addGap(281, 281, 281)
+                                .addComponent(btnVerPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(239, 239, 239)
                                 .addComponent(btnEnviarMensaje))
                             .addGroup(panelBuscadorLayout.createSequentialGroup()
                                 .addComponent(jLabel20)
@@ -750,9 +757,9 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
-                .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnVerPerfil))
+                    .addComponent(btnVerPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(panelBuscadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
@@ -765,13 +772,11 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel10.setText("Notificaciones");
 
-        txtAreaNotificaciones.setEditable(false);
-        txtAreaNotificaciones.setColumns(20);
-        txtAreaNotificaciones.setRows(5);
-        jScrollPane2.setViewportView(txtAreaNotificaciones);
-
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel11.setText("Para ver los mensajes enviados ve a la pestaña de \"Bandeja de Mensajes\"");
+
+        panelContenedorNotificaciones.setBackground(new java.awt.Color(27, 138, 198));
+        panelContenedorNotificaciones.setLayout(new java.awt.GridBagLayout());
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setText("NOTA:");
@@ -786,27 +791,27 @@ public class PrincipalGUI extends javax.swing.JFrame {
                         .addGap(630, 630, 630)
                         .addComponent(jLabel10))
                     .addGroup(panelNotificacionesLayout.createSequentialGroup()
-                        .addGap(458, 458, 458)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelNotificacionesLayout.createSequentialGroup()
-                        .addGap(492, 492, 492)
+                        .addGap(471, 471, 471)
                         .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel11)))
-                .addContainerGap(1166, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel11))
+                    .addGroup(panelNotificacionesLayout.createSequentialGroup()
+                        .addGap(558, 558, 558)
+                        .addComponent(panelContenedorNotificaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(1189, Short.MAX_VALUE))
         );
         panelNotificacionesLayout.setVerticalGroup(
             panelNotificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelNotificacionesLayout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(jLabel10)
-                .addGap(50, 50, 50)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(panelContenedorNotificaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
                 .addGroup(panelNotificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel12))
-                .addContainerGap(517, Short.MAX_VALUE))
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel11))
+                .addContainerGap(485, Short.MAX_VALUE))
         );
 
         Ventana.addTab("Notificaciones", new javax.swing.ImageIcon(getClass().getResource("/imagenes/notificaciones_icon.png")), panelNotificaciones); // NOI18N
@@ -867,6 +872,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnVerPerfilActionPerformed
 
+    private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEnviarMensajeActionPerformed
+
      /**
      * El propósito del método es limpiar y eliminar los checkBoxes en el array
      * y las publicacions en el Panel Contenedor. Se utiliza cada vez que se usa
@@ -876,6 +885,13 @@ public class PrincipalGUI extends javax.swing.JFrame {
         checkBoxesPublicaciones.clear();
         panelContenedorPublicaciones.removeAll();
     }
+    
+    //DANIEL
+    public void eliminarNotificaciones() {        
+        panelContenedorNotificaciones.removeAll();
+    }
+    //DANIEL
+    
 
     /**
      * El propósito del método es obtener el id de las publicaciones
@@ -939,6 +955,37 @@ public class PrincipalGUI extends javax.swing.JFrame {
      *
      * @param publicaciones El array de PublicacionesPaquete del Empleado
      */
+    //DANIEL
+    public void cargarNotificaciones(Notificaciones notificaciones) {
+        eliminarNotificaciones();
+        List<Paquetes.ConsultaNotificacion> listaNotificaciones;
+        listaNotificaciones = notificaciones.getNotifcaiones();
+
+        for (Paquetes.ConsultaNotificacion notificacionPaquete : listaNotificaciones) {
+            System.out.println("ESTADOMENSAJE: "+notificacionPaquete.getEstadoMensaje());
+            if(notificacionPaquete.getEstadoMensaje() == 0){
+                Notificacion notificacion = new Notificacion(notificacionPaquete.getNomEmpEnvia()); 
+                GridBagConstraints restriccion = new GridBagConstraints();
+                restriccion.gridx = 0;
+                restriccion.gridy = panelContenedorNotificaciones.getComponentCount();
+                restriccion.fill = GridBagConstraints.HORIZONTAL;
+                restriccion.insets = new Insets(2, 0, 2, 0);
+                restriccion.weightx = 1;//1.0
+                restriccion.ipady = 10;//100            
+                panelContenedorNotificaciones.add(notificacion, restriccion);
+            }    
+        }
+
+        panelContenedorNotificaciones.revalidate();
+        panelContenedorNotificaciones.invalidate();
+        repaint();
+
+    }
+    
+    //DANIEL
+    
+    
+    
     public void cargarPublicaciones(Publicaciones publicaciones) {
         eliminarPublicaciones();
         List<Paquetes.Publicacion> listaPublicaciones;
@@ -1166,6 +1213,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     
     private EscribirPublicacion escribirPublicacion;
     private ArrayList<JCheckBox> checkBoxesPublicaciones;
+    private ArrayList<JCheckBox> checkBoxesNotificaciones;
     private String descripcionEmpleado;
     private String sexo;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1198,7 +1246,6 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JLabel lblCorreo;
@@ -1220,6 +1267,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JPanel panelBandeja;
     private javax.swing.JPanel panelBuscador;
     private javax.swing.JPanel panelBusqueda;
+    private javax.swing.JPanel panelContenedorNotificaciones;
     private javax.swing.JPanel panelContenedorPublicaciones;
     private javax.swing.JPanel panelControlPublicacion;
     private javax.swing.JPanel panelNotificaciones;
@@ -1230,7 +1278,6 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrollTable;
     private javax.swing.JTable tablaBusqueda;
     private javax.swing.JTextArea txtAreaDescripcion;
-    private javax.swing.JTextArea txtAreaNotificaciones;
     private javax.swing.JTextField txtNombreBandeja;
     private javax.swing.JTextField txtNombreBusqueda;
     // End of variables declaration//GEN-END:variables

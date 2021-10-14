@@ -7,6 +7,7 @@ package Modelo;
 
 import Controlador.Controlador;
 import Paquetes.Chat;
+import Paquetes.ConsultaNotificacion;
 import Paquetes.ConsultaPerfiles;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -94,7 +95,7 @@ public class Conexion extends Thread {
         } catch (IOException ex) {
             System.out.println("Erro al enviar el paquete: " + ex.getMessage());
         }
-
+        
     }
 
     /**
@@ -129,12 +130,18 @@ public class Conexion extends Thread {
                         controlador.construirChat((Chat) paquete);
                         System.out.println("RECIBÍ CHAT");
                         
+                        
                     } break;
 
                   //DANIEL
                     case Paquete.consultaPerfil: {                        
                         controlador.iniciarPerfiles((ConsultaPerfiles)paquete);                        
                     }
+                    case Paquete.consultaNotificacion: {                        
+                        controlador.cargarNotificaciones((ConsultaNotificacion)paquete);   
+                        System.out.println("");
+                    }
+                    
                   //DANIEL
                }
             }
