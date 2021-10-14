@@ -1041,8 +1041,8 @@
                               <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="558" max="-2" attributes="0"/>
-                              <Component id="panelContenedorNotificaciones" min="-2" pref="333" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="562" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" min="-2" pref="297" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace pref="1189" max="32767" attributes="0"/>
@@ -1055,8 +1055,8 @@
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="panelContenedorNotificaciones" min="-2" pref="429" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="440" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1083,15 +1083,6 @@
                 <Property name="text" type="java.lang.String" value="Para ver los mensajes enviados ve a la pesta&#xf1;a de &quot;Bandeja de Mensajes&quot;"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JPanel" name="panelContenedorNotificaciones">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="c6" green="8a" red="1b" type="rgb"/>
-                </Property>
-              </Properties>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
-            </Container>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -1100,6 +1091,21 @@
                 <Property name="text" type="java.lang.String" value="NOTA:"/>
               </Properties>
             </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="panelContenedorNotificaciones">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="c6" green="8a" red="1b" type="rgb"/>
+                    </Property>
+                  </Properties>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+                </Container>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
       </SubComponents>

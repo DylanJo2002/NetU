@@ -261,8 +261,9 @@ public class PrincipalGUI extends javax.swing.JFrame {
         };
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        panelContenedorNotificaciones = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        panelContenedorNotificaciones = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NetU");
@@ -775,11 +776,12 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel11.setText("Para ver los mensajes enviados ve a la pestaña de \"Bandeja de Mensajes\"");
 
-        panelContenedorNotificaciones.setBackground(new java.awt.Color(27, 138, 198));
-        panelContenedorNotificaciones.setLayout(new java.awt.GridBagLayout());
-
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setText("NOTA:");
+
+        panelContenedorNotificaciones.setBackground(new java.awt.Color(27, 138, 198));
+        panelContenedorNotificaciones.setLayout(new java.awt.GridBagLayout());
+        jScrollPane2.setViewportView(panelContenedorNotificaciones);
 
         javax.swing.GroupLayout panelNotificacionesLayout = new javax.swing.GroupLayout(panelNotificaciones);
         panelNotificaciones.setLayout(panelNotificacionesLayout);
@@ -796,8 +798,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel11))
                     .addGroup(panelNotificacionesLayout.createSequentialGroup()
-                        .addGap(558, 558, 558)
-                        .addComponent(panelContenedorNotificaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(562, 562, 562)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(1189, Short.MAX_VALUE))
         );
         panelNotificacionesLayout.setVerticalGroup(
@@ -806,8 +808,8 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
-                .addComponent(panelContenedorNotificaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
                 .addGroup(panelNotificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jLabel11))
@@ -1246,6 +1248,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JLabel lblCorreo;
