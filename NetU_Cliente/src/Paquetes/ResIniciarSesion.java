@@ -15,7 +15,7 @@ public class ResIniciarSesion extends Paquete {
     private Publicaciones publicaciones;
     private ArrayList<itemCombo> dependencias;
     private ArrayList<ArrayList<itemCombo>> subdependencias;
-    
+    private Bandeja bandeja;
     /**
      * El propósito del método es devolver el valor del éxito.
      * @return Un entero que define si el inicio de sesión fue exitoso si es 0
@@ -83,8 +83,13 @@ public class ResIniciarSesion extends Paquete {
     public void setSubdependencias(ArrayList<ArrayList<itemCombo>> subdependencias) {
         this.subdependencias = subdependencias;
     }
-    
-    
-    
+
+    public Bandeja getBandeja() {
+        return bandeja;
+    }
+
+    public void setBandeja(Bandeja bandeja) {
+        this.bandeja = bandeja;
+    }   
 
 }

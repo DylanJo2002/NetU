@@ -24,7 +24,7 @@ public class Paquete implements Serializable {
     public static final int consultaPerfil = 9;
     public static final int cambiarFoto = 11;
     //DANIEL
-
+    public static final int bandeja = 21;
 
     private int tipo;
     /**

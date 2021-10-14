@@ -5,6 +5,7 @@
 package Controlador;
 
 import Modelo.GestorBDEmpleado;
+import Paquetes.Bandeja;
 import Paquetes.CambiarDescripcion;
 import Paquetes.Chat;
 import Paquetes.CambiarFoto;
@@ -23,6 +24,7 @@ import Paquetes.Publicacion;
 import Paquetes.Publicaciones;
 import Paquetes.ResIniciarSesion;
 import Paquetes.RespuestaBusqueda;
+import Vista.ElementoBandeja;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -235,6 +237,10 @@ public class Servidor extends Thread {
                         chatActual.setCodigoDestinatario(mensaje.getCodigoDestinatario());
                         chatActual.setTipo(Paquete.chat);
                         enviarPaquete(gestorEmpleado.contruirChat(chatActual, codigo));
+                        Bandeja bandejaActualizada = gestorEmpleado.consultarBandeja(
+                                new Bandeja(), codigo);
+                        bandejaActualizada.setTipo(Paquete.bandeja);
+                        enviarPaquete(bandejaActualizada);
                         HiloEmpleado empDestinatario = 
                             buscarEmpleado(mensaje.getCodigoDestinatario());
                         if(empDestinatario != null && 
@@ -242,7 +248,16 @@ public class Servidor extends Thread {
                                         getCodigoDestinatario(), codigo)){
                                 enviarChat(empDestinatario, codigo);
                         }
-                        
+                        if(empDestinatario != null){
+                            Bandeja bandeja = gestorEmpleado.consultarBandeja(
+                                    new Bandeja(), empDestinatario.codigo);
+                            bandeja.setTipo(Paquete.bandeja);
+                            empDestinatario.enviarPaquete(bandeja);
+                            System.out.println("CODIGO: "+empDestinatario.codigo);
+                            for(ElementoBandeja el : bandeja.getElementos()){
+                                System.out.println(el.getNombreEmpleado());
+                            }
+                        }
                     }else{
                     if(paquete.getTipo() == Paquete.cerrarChat){
                         gestorEmpleado.cerrarChat(codigo);

@@ -6,6 +6,7 @@ package Modelo;
 
 
 import Controlador.Controlador;
+import Paquetes.Bandeja;
 import Paquetes.Chat;
 import Paquetes.ConsultaPerfiles;
 import java.io.IOException;
@@ -136,6 +137,10 @@ public class Conexion extends Thread {
                         controlador.iniciarPerfiles((ConsultaPerfiles)paquete);                        
                     }
                   //DANIEL
+                    case Paquete.bandeja: {
+                        controlador.cargarElementosBandeja((Bandeja) paquete);
+                        System.out.println("RECIBÍ BANDEJA");
+                    }
                }
             }
         } catch (IOException ex) {
