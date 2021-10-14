@@ -137,17 +137,17 @@ public class Conexion extends Thread {
                   //DANIEL
                     case Paquete.consultaPerfil: {                        
                         controlador.iniciarPerfiles((ConsultaPerfiles)paquete);                        
-                    }
+                    } break;
                     case Paquete.consultaNotificacion: {                        
                         controlador.cargarNotificaciones((ConsultaNotificacion)paquete);   
                         System.out.println("");
-                    }
+                    } break;
                     
                   //DANIEL
                     case Paquete.bandeja: {
                         controlador.cargarElementosBandeja((Bandeja) paquete);
                         System.out.println("RECIBÍ BANDEJA");
-                    }
+                    } break;
                }
             }
         } catch (IOException ex) {

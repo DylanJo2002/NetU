@@ -275,8 +275,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                 }
                 
                 abrirChat();
-                consultaNotificacion();
-                
+                consultaNotificacion();             
             }
             
             if(e.getSource().equals(principalGUI.getBtnBuscar())){
@@ -310,6 +309,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                 JButton botonElemento = (JButton) e.getSource();
                 abrirChatBandeja(Integer.parseInt(botonElemento.getName()),
                         botonElemento.getText());
+                consultaNotificacion(); 
             }
         }
         
@@ -420,6 +420,7 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
     }
 
     public void abrirChatBandeja(int codigo, String nombre) {
+        System.out.println("Abrir chat bandeja");
         nombreChat = nombre;
         Chat peticionChat = new Chat();
         peticionChat.setCodigoDestinatario(codigo);
