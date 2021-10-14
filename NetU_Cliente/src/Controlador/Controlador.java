@@ -263,25 +263,13 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
                 }
             }
             
-            if(e.getSource().equals(principalGUI.getBtnEnviarMensaje())){
-                String codigoInput = JOptionPane.showInputDialog("Escriba el código del empleado");       
+            if(e.getSource().equals(principalGUI.getBtnEnviarMensaje())){      
                 if(chatGui != null){
                     JOptionPane.showMessageDialog(null,"Cierra el chat con "
                             .concat(chatGui.getTitle()).concat(" para abrir otro")); 
                     return;
                 }
-                try {
-                    nombreChat = "NOMBRE DEL EMPLEADO";
-                    int codigoEmpleado = Integer.parseInt(codigoInput);
-                    Chat peticionChat = new Chat();
-                    peticionChat.setCodigoDestinatario(codigoEmpleado);
-                    peticionChat.setTipo(Paquete.chat);
-                    conexion.enviarPaquete(peticionChat);
-                }catch(NumberFormatException exception){
-                    JOptionPane.showMessageDialog(null,"Debe ingresar un código"
-                            .concat(" válido"));
-                }
-                
+                abrirChat();
             }
             
             if(e.getSource().equals(principalGUI.getBtnBuscar())){
@@ -391,6 +379,20 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
             conexion.enviarPaquete(cp);
     
         }catch(Exception e){
+            principalGUI.desplegarMensajeDialogo(1,"Sin Empleados",
+                    "Por favor busque un empleado y seleccionelo");
+        }
+    }
+    
+    public void abrirChat() {
+        try {
+            Empleado empleado = principalGUI.getEmpleadoFromTable();
+            nombreChat = empleado.getNombre();
+            Chat peticionChat = new Chat();
+            peticionChat.setCodigoDestinatario(empleado.getCodigo());
+            peticionChat.setTipo(Paquete.chat);
+            conexion.enviarPaquete(peticionChat);
+        } catch (NumberFormatException exception) {
             principalGUI.desplegarMensajeDialogo(1,"Sin Empleados",
                     "Por favor busque un empleado y seleccionelo");
         }
