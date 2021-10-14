@@ -6,6 +6,7 @@ package Modelo;
 
 
 import Controlador.Controlador;
+import Paquetes.Bandeja;
 import Paquetes.Chat;
 import Paquetes.ConsultaNotificacion;
 import Paquetes.ConsultaPerfiles;
@@ -143,6 +144,10 @@ public class Conexion extends Thread {
                     }
                     
                   //DANIEL
+                    case Paquete.bandeja: {
+                        controlador.cargarElementosBandeja((Bandeja) paquete);
+                        System.out.println("RECIBÍ BANDEJA");
+                    }
                }
             }
         } catch (IOException ex) {

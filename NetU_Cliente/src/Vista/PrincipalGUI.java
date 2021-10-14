@@ -6,6 +6,7 @@ package vista;
 import Paquetes.ConsultaNotificacion;
 import Paquetes.Notificaciones;
 import Paquetes.Publicaciones;
+import Vista.ElementoBandeja;
 import Vista.Empleado;
 import Vista.Publicacion;
 import Vista.TMEmpleado;
@@ -31,6 +32,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 
@@ -193,14 +195,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
             }
         };
         jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        txtNombreBandeja = new javax.swing.JTextField();
-        btnBuscarMensaje = new javax.swing.JButton();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
-        btnAbrirChat = new javax.swing.JButton();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
+        scrollBandeja = new javax.swing.JScrollPane();
+        panelElementos = new javax.swing.JPanel();
         panelBuscador = new javax.swing.JPanel(){
             @Override
             public void paint(Graphics g) {
@@ -347,7 +345,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_Info_PerfilLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                         .addGroup(panel_Info_PerfilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnCambiarFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnModificarDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -448,7 +446,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(pane_lbl_Publicaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9)
-                .addComponent(scrollPanePublicaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
+                .addComponent(scrollPanePublicaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -542,23 +540,16 @@ public class PrincipalGUI extends javax.swing.JFrame {
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel21.setText("Bandeja de Mensajes");
 
-        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel22.setText("Nombre empleado:");
-
-        btnBuscarMensaje.setText("Buscar");
-
-        jTextArea3.setEditable(false);
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane4.setViewportView(jTextArea3);
-
-        btnAbrirChat.setText("Abrir Chat");
-
         jLabel23.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel23.setText("Antes de darle click al boton, seleccionar un empleado");
+        jLabel23.setText("De click en el chat del empleado que desea abrir. Únicamente puede tener un chat abierto a la vez");
+        jLabel23.setToolTipText("");
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel24.setText("NOTA:");
+
+        panelElementos.setBackground(new java.awt.Color(255, 255, 255));
+        panelElementos.setLayout(new java.awt.GridBagLayout());
+        scrollBandeja.setViewportView(panelElementos);
 
         javax.swing.GroupLayout panelBandejaLayout = new javax.swing.GroupLayout(panelBandeja);
         panelBandeja.setLayout(panelBandejaLayout);
@@ -570,44 +561,26 @@ public class PrincipalGUI extends javax.swing.JFrame {
                         .addGap(577, 577, 577)
                         .addComponent(jLabel21))
                     .addGroup(panelBandejaLayout.createSequentialGroup()
-                        .addGap(474, 474, 474)
-                        .addComponent(jLabel22)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNombreBandeja, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelBandejaLayout.createSequentialGroup()
-                        .addGap(676, 676, 676)
-                        .addComponent(btnAbrirChat))
-                    .addGroup(panelBandejaLayout.createSequentialGroup()
-                        .addGap(549, 549, 549)
+                        .addGap(411, 411, 411)
                         .addComponent(jLabel24)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel23))
-                    .addGroup(panelBandejaLayout.createSequentialGroup()
-                        .addGap(524, 524, 524)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(1172, Short.MAX_VALUE))
+                        .addGap(2, 2, 2)
+                        .addGroup(panelBandejaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(scrollBandeja, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(1122, Short.MAX_VALUE))
         );
         panelBandejaLayout.setVerticalGroup(
             panelBandejaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBandejaLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel21)
-                .addGap(72, 72, 72)
+                .addGap(24, 24, 24)
+                .addComponent(scrollBandeja, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
                 .addGroup(panelBandejaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel22)
-                    .addComponent(txtNombreBandeja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnAbrirChat, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelBandejaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel23)
-                    .addComponent(jLabel24))
-                .addContainerGap(437, Short.MAX_VALUE))
+                    .addComponent(jLabel24)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(445, Short.MAX_VALUE))
         );
 
         Ventana.addTab("Mensajes", new javax.swing.ImageIcon(getClass().getResource("/imagenes/bandeja_icon.png")), panelBandeja); // NOI18N
@@ -811,10 +784,9 @@ public class PrincipalGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(panelNotificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel11))
-                .addContainerGap(485, Short.MAX_VALUE))
-        );
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12))
+                .addContainerGap(521, Short.MAX_VALUE)));
 
         Ventana.addTab("Notificaciones", new javax.swing.ImageIcon(getClass().getResource("/imagenes/notificaciones_icon.png")), panelNotificaciones); // NOI18N
 
@@ -1213,6 +1185,35 @@ public class PrincipalGUI extends javax.swing.JFrame {
         return empleado;
     }
     
+    public void agregarElementosBandeja(List<ElementoBandeja> elementos,
+            ActionListener al){
+        panelElementos.removeAll();
+        for (ElementoBandeja elemento: elementos) {
+            System.out.println(elemento.getNombreEmpleado()+"-KKK-");
+            JButton nuevoElemento = new JButton(elemento.getNombreEmpleado());
+            nuevoElemento.setName(elemento.getCodigoEmpleado()+"");
+            nuevoElemento.addActionListener(al);
+            GridBagConstraints restriccion = new GridBagConstraints();
+            restriccion.gridx = 0;
+            restriccion.gridy = panelElementos.getComponentCount();
+            restriccion.fill = GridBagConstraints.HORIZONTAL;
+            restriccion.insets = new Insets(2, 0, 2, 0);
+            restriccion.weightx = 1.0;
+            restriccion.ipady = 50;
+            panelElementos.add(nuevoElemento, restriccion);
+        }
+
+        panelElementos.revalidate();
+        panelElementos.invalidate();
+        repaint();    
+    }
+
+    public JPanel getPanelElementos() {
+        return panelElementos;
+    }
+    
+    
+    
     private EscribirPublicacion escribirPublicacion;
     private ArrayList<JCheckBox> checkBoxesPublicaciones;
     private ArrayList<JCheckBox> checkBoxesNotificaciones;
@@ -1220,9 +1221,7 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private String sexo;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane Ventana;
-    private javax.swing.JButton btnAbrirChat;
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnBuscarMensaje;
     private javax.swing.JButton btnCambiarFoto;
     private javax.swing.JButton btnControlPublicaciones;
     private javax.swing.JButton btnEliminarPublicacion;
@@ -1244,13 +1243,10 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JLabel lblCorreo;
     private javax.swing.JLabel lblCorreoValor;
     private javax.swing.JLabel lblDependencia;
@@ -1273,15 +1269,16 @@ public class PrincipalGUI extends javax.swing.JFrame {
     private javax.swing.JPanel panelContenedorNotificaciones;
     private javax.swing.JPanel panelContenedorPublicaciones;
     private javax.swing.JPanel panelControlPublicacion;
+    private javax.swing.JPanel panelElementos;
     private javax.swing.JPanel panelNotificaciones;
     private javax.swing.JPanel panelPerfil;
     private javax.swing.JPanel panelPublicaciones;
     private javax.swing.JPanel panel_Info_Perfil;
+    private javax.swing.JScrollPane scrollBandeja;
     private javax.swing.JScrollPane scrollPanePublicaciones;
     private javax.swing.JScrollPane scrollTable;
     private javax.swing.JTable tablaBusqueda;
     private javax.swing.JTextArea txtAreaDescripcion;
-    private javax.swing.JTextField txtNombreBandeja;
     private javax.swing.JTextField txtNombreBusqueda;
     // End of variables declaration//GEN-END:variables
 

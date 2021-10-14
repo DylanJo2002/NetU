@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import Paquetes.Paquete;
 import Paquetes.*;
+import Vista.ElementoBandeja;
 import Vista.Empleado;
 import Vista.itemCombo;
 import java.sql.Connection;
@@ -70,6 +71,7 @@ public class GestorBDEmpleado {
                 respuesta.setPublicaciones(listarPublicaciones(peticion.getCodigo()));
                 respuesta.setDependencias(consultarDependencias());
                 respuesta.setSubdependencias(consultarSubdependencias(respuesta.getDependencias()));
+                respuesta.setBandeja(consultarBandeja(new Bandeja(), peticion.getCodigo()));
                 cambiarEstadoEmpleado(peticion.getCodigo(), true);
             } else {
 
@@ -256,7 +258,7 @@ public class GestorBDEmpleado {
     public Chat contruirChat(Chat chat, int codigoEmpleado) {
         String conjunto = "IN ("+codigoEmpleado+","+chat.getCodigoDestinatario()+")";
         String consultarChat = "SELECT * FROM mensaje WHERE codigo_Empleado_1 "
-                + conjunto + " OR codigo_Empleado_2 "+conjunto
+                + conjunto + " AND codigo_Empleado_2 "+conjunto
                 + " ORDER BY fecha, hora ASC";
         String crearChatEmisor = "INSERT INTO chat values('"+codigoEmpleado+"','"
                 +chat.getCodigoDestinatario()+"',1)";
@@ -265,8 +267,8 @@ public class GestorBDEmpleado {
         String actualizarEstado = "UPDATE chat set abierto = 1 WHERE "
                 + "codigo_Empleado_1 = "+codigoEmpleado+" AND codigo_Empleado_2"
                 + " = "+chat.getCodigoDestinatario();
-        String existeChat = "SELECT * FROM chat WHERE codigo_Empleado_1 "
-                +conjunto+" OR codigo_Empleado_2 "+conjunto;
+        String existeChat = "SELECT * FROM chat WHERE codigo_Empleado_1 = "
+                +codigoEmpleado+" AND codigo_Empleado_2 = "+chat.getCodigoDestinatario();
         
         String actualizarEstadoNot = "UPDATE notificacionmensaje set visto = 1 WHERE "
                 + "codigo_Empleado_1 = "+chat.getCodigoDestinatario()+" AND codigo_Empleado_2"
@@ -303,7 +305,7 @@ public class GestorBDEmpleado {
             return null;
         }
 
-        
+        System.out.println();
         return chat;
     };
     
@@ -703,4 +705,28 @@ public class GestorBDEmpleado {
         return listado;
     }
     
+    public Bandeja consultarBandeja(Bandeja bandeja, int codigoEmpleado){
+        String consulta = "SELECT emp2.codigo_Empleado,emp2.nombre " +
+        "FROM chat chat join empleado emp1 ON chat.codigo_Empleado_1 = " +
+        "emp1.codigo_Empleado join empleado emp2 on chat.codigo_Empleado_2 = " +
+        "emp2.codigo_Empleado join mensaje m on m.codigo_Empleado_2 = " +
+        "chat.codigo_Empleado_2 and m.codigo_Empleado_1 = "+codigoEmpleado+" "+
+        "or chat.codigo_Empleado_2 and m.codigo_Empleado_2 = "+codigoEmpleado+" "+        
+        "WHERE chat.codigo_Empleado_1 = "+codigoEmpleado+" "+
+        "group by codigo_Empleado,nombre order by fecha desc, hora desc";
+        
+        ResultSet set = ejecutarQuery(consulta);
+        try {
+            while(set.next()){
+                ElementoBandeja elemento = new ElementoBandeja(
+                        set.getString("nombre"),set.getInt("codigo_Empleado"));
+                bandeja.agregarElemento(elemento);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al leer la consulta de la bandeja "
+                    +ex.getMessage());
+        }
+        
+        return bandeja;
+    }
 }

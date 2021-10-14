@@ -5,6 +5,7 @@
 package Controlador;
 
 import Modelo.Conexion;
+import Paquetes.Bandeja;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Paquetes.Paquete;
@@ -21,6 +22,7 @@ import Paquetes.PeticionBusqueda;
 import Paquetes.EnvioMensaje;
 import Paquetes.Publicacion;
 import Paquetes.Publicaciones;
+import Vista.ElementoBandeja;
 import Vista.Empleado;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -39,6 +41,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import vista.ChatGUI;
@@ -105,6 +108,9 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         principalGUI.setSubdependencias(resIniciarSesion.getSubdependencias());        
         principalGUI.llenarCbxDependencias();   
         consultaNotificacion();
+        principalGUI.agregarElementosBandeja(resIniciarSesion.getBandeja()
+                .getElementos(),this);
+
     }
 
     public void asignarEscuchasVentanaPrincipal() {
@@ -293,7 +299,18 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
             if (e.getSource().equals(principalGUI.getBtnCambiarFoto())) {
                 agregarFotoLocal();
             }          
-
+            
+            if (((JComponent) e.getSource()).getParent().equals(
+                principalGUI.getPanelElementos())){
+                if(chatGui != null){
+                    JOptionPane.showMessageDialog(null,"Cierra el chat con "
+                            .concat(chatGui.getTitle()).concat(" para abrir otro")); 
+                    return;
+                }                
+                JButton botonElemento = (JButton) e.getSource();
+                abrirChatBandeja(Integer.parseInt(botonElemento.getName()),
+                        botonElemento.getText());
+            }
         }
         
         if(chatGui != null){
@@ -322,21 +339,11 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
         if (resIniciarSesion.getExito() != 10) {
 
             iniciarPrincipalGUI(resIniciarSesion);
-            /*ArrayList<itemCombo> dep = resIniciarSesion.getDependencias();
-            ArrayList<ArrayList<itemCombo>> subDep = resIniciarSesion.getSubdependencias();
-
-            for(itemCombo item: dep){
-                System.out.print(item.getNombre()+ "  ");   
+            List<ElementoBandeja> ban= resIniciarSesion.getBandeja().getElementos();
+            
+            for(ElementoBandeja el : ban){
+                System.out.println(el.getCodigoEmpleado()+" - "+el.getNombreEmpleado()+"\n");
             }
-            
-            
-            for(ArrayList<itemCombo> fila: subDep){
-                System.out.print(subDep.indexOf(fila) + "   ");
-                
-                for(itemCombo item: fila){
-                    System.out.print(item.getNombre());
-                }
-            }*/
             
         } else {
             login.desplegarMensaje(1, "Error al iniciar sesión",
@@ -410,6 +417,14 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
             principalGUI.desplegarMensajeDialogo(1,"Sin Empleados",
                     "Por favor busque un empleado y seleccionelo");
         }
+    }
+
+    public void abrirChatBandeja(int codigo, String nombre) {
+        nombreChat = nombre;
+        Chat peticionChat = new Chat();
+        peticionChat.setCodigoDestinatario(codigo);
+        peticionChat.setTipo(Paquete.chat);
+        conexion.enviarPaquete(peticionChat);
     }
 
     public void iniciarPerfiles(ConsultaPerfiles cp) {  
@@ -581,5 +596,9 @@ public class Controlador implements ActionListener, KeyListener, WindowListener 
     @Override
     public void windowDeactivated(WindowEvent e) {
     }
-
+    
+    public void cargarElementosBandeja(Bandeja bandeja){
+        System.out.println("RECIBI BANDEJA - CONTROLADOR");
+        principalGUI.agregarElementosBandeja(bandeja.getElementos(), this);
+    }
 }
